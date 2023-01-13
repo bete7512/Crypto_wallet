@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import Web3 from 'web3'
+import * as dotenv from 'dotenv'
 import Contract from 'web3-eth-contract'
 import Personal from 'web3-eth-personal'
 
-const web3 = new Web3(
-  'https://goerli.infura.io/v3/7adda8f39ad04bf2b5709fe8a04fbbdd',
-)
+dotenv.config()
+const web3 = new Web3(process.env.INFURA_GOERLI_END_POINT)
 const account = web3.eth.accounts.create()
 const web3Object = {
   account,

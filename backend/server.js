@@ -8,11 +8,13 @@ import randomEmail from 'random-email'
 import randomNames from 'random-names-generator'
 import bycrypt from 'bcrypt'
 import createMobilePhoneNumber from 'random-mobile-numbers'
+import * as dotenv from 'dotenv'
 import client from './configuration/apollo.config.js'
 import { registerQuery } from './constant/constant.js'
 import { web3, web3Object } from './web3/web3.js'
 import { user } from './constant/user.js'
 
+dotenv.config()
 const app = express()
 app.use(express.json())
 
@@ -43,6 +45,6 @@ app.post('/', async (req, res) => {
   await onTest()
   res.send(newUser)
 })
-app.listen(6000, () => {
+app.listen(process.env.PORT, () => {
   console.log(`I am happy to share that I started using ES6 today`)
 })

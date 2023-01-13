@@ -1,12 +1,11 @@
 import { GraphQLClient } from 'graphql-request'
+// eslint-disable-next-line no-unused-vars
+import * as dotenv from 'dotenv'
 
-const client = new GraphQLClient(
-  'https://blockchain-wallet.hasura.app/v1/graphql',
-  {
-    headers: {
-      'x-hasura-admin-secret':
-        'aV1Xjxq3gzIVxppyVUwLL13JrLC2A2ZOlfYeenaXko46zqI89K7N1rK43WNWciH7',
-    },
+dotenv.config()
+const client = new GraphQLClient(process.env.HASURA_ENDPOINT, {
+  headers: {
+    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET_KEY,
   },
-)
+})
 export default client
