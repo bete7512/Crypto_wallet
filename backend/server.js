@@ -1,50 +1,34 @@
-/* eslint-disable import/named */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable import/extensions */
+/* eslint-disable consistent-return */
+// /* eslint-disable import/named */
+// /* eslint-disable no-unused-vars */
+// /* eslint-disable no-console */
+// /* eslint-disable import/extensions */
 import express from 'express'
-import { gql } from 'graphql-request'
-import randomEmail from 'random-email'
-import randomNames from 'random-names-generator'
-import bycrypt from 'bcrypt'
-import createMobilePhoneNumber from 'random-mobile-numbers'
 import * as dotenv from 'dotenv'
-import client from './configuration/apollo.config.js'
-import { registerQuery } from './constant/constant.js'
-import { web3, web3Object } from './web3/web3.js'
-import { user } from './constant/user.js'
+
+const app = express()
+app.use(express.json({ limit: '200mb' }))
+app.use(express.urlencoded({ extended: true }))
 
 dotenv.config()
-const app = express()
-app.use(express.json())
-
-app.post('/', async (req, res) => {
-  const { account } = web3Object
-  user.privateKey = account.privateKey
-  user.publicKey = account.address
-  user.email = randomEmail({ domain: 'gmail.com' })
-  user.username = user.email
-  user.fName = randomNames.random()
-  user.lName = randomNames.random()
-  user.password = bycrypt.hashSync('password', 10)
-  user.phone = createMobilePhoneNumber('TR')
-
-  console.log('am user', user)
-  let newUser
-  const onTest = async () => {
-    try {
-      const userRegister = await client.request(registerQuery, {
-        ...user,
+app.post('/:route', async (req, res) => {
+  try {
+    console.log(req.params.route)
+    const { handler } = await import(`./handler/${req.params.route}.js`)
+    if (!handler) {
+      return res.status(400).json({
+        message: 'not found',
       })
-      newUser = userRegister
-      console.log(`am registered${userRegister.insert_users_one}`)
-    } catch (error) {
-      console.log(error)
     }
+    console.log(typeof handler)
+   handler(req, res)
+  } catch (e) {
+    console.log(e)
+    return res.status(400).json({
+      message: 'unexpected error occured',
+    })
   }
-  await onTest()
-  res.send(newUser)
 })
 app.listen(process.env.PORT, () => {
-  console.log(`I am happy to share that I started using ES6 today`)
+  console.log('on the moon')
 })
