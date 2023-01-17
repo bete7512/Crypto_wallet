@@ -20,7 +20,6 @@ app.post('/:route', async (req, res) => {
         message: 'not found',
       })
     }
-    console.log(typeof handler)
    handler(req, res)
   } catch (e) {
     console.log(e)
