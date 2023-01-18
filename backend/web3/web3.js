@@ -6,7 +6,7 @@ import Contract from 'web3-eth-contract'
 import Personal from 'web3-eth-personal'
 
 dotenv.config()
-const web3 = new Web3(process.env.INFURA_GOERLI_END_POINT)
+const web3 = new Web3(process.env.INFURA_MIANNET_END_POINT)
 const account = web3.eth.accounts.create()
 const web3Object = {
   account,

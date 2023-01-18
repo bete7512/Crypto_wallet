@@ -426,4 +426,5 @@ const Tether_ABI = [
   { anonymous: false, inputs: [], name: 'Pause', type: 'event' },
   { anonymous: false, inputs: [], name: 'Unpause', type: 'event' },
 ]
-export { registerQuery,Tether_ABI }
+
+export { registerQuery, Tether_ABI }
