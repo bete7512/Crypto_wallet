@@ -1,0 +1,46 @@
+type Mutation {
+  fileupload(
+    name: String!
+    type: String!
+    base64str: String!
+  ): fileoutput
+}
+
+type Mutation {
+  login(
+    inputs: inputs!
+  ): outputs
+}
+
+type Mutation {
+  signup(
+    input: input_reg!
+  ): output_reg
+}
+
+input inputs {
+  email: String!
+  password: String!
+}
+
+input input_reg {
+  fname: String!
+  lname: String!
+  email: String!
+  username: String!
+  password: String!
+  address: String!
+}
+
+type outputs {
+  accestoken: String!
+}
+
+type output_reg {
+  success: String!
+}
+
+type fileoutput {
+  file_path: String!
+}
+
