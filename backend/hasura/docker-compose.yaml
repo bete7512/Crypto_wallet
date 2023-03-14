@@ -1,39 +1,34 @@
 version: '3.6'
 services:
-  'postgres':
+  crypto_postgres:
     image: postgres:12
     restart: always
-    ports:
-      - 5432:5432
-    volumes:
-    - db_data:/var/lib/postgresql/data
+    container_name: crypto_postgres
     environment:
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-  graphql-engine:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5433:5432
+    volumes:
+      - crypto_db_data:/var/lib/postgresql/data
+  hasura_for_crypto:
+    container_name: hasura_for_crypto
     image: hasura/graphql-engine:v2.16.1
     ports:
-    - "8080:8080"
+      - 8080:8080
     depends_on:
-    - "postgres"
+      - crypto_postgres
     restart: always
     environment:
-      ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: $HASURA_GRAPHQL_METADATA_DATABASE_URL
-      ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      PG_DATABASE_URL: $PG_DATABASE_URL
-      ## enable the console served by server
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
+      # HASURA_GRAPHQL_METADATA_DATABASE_URL: ${PG_DATABASE_URL}
+      HASURA_GRAPHQL_DATABASE_URL: ${PG_DATABASE_URL} # changed from PG_DATABASE_URL to HASURA_GRAPHQL_DATABASE_URL
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
-      # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
-      ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_CORS_DOMAIN: '*'
-      HASURA_GRAPHQL_ADMIN_SECRET: $HASURA_ADMIN_SECRET_KEY
-      HASURA_GRAPHQL_JWT_SECRET: $HASURA_GRAPHQL_JWT_SECRET
-      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'public'
+      HASURA_GRAPHQL_CORS_DOMAIN: "*"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET_KEY}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous" # changed from 'public' to 'anonymous'
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET} # added JWT secret in the correct format
 
 volumes:
-  db_data:
-
+  crypto_db_data:
