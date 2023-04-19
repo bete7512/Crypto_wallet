@@ -7,6 +7,7 @@ import express from 'express'
 import * as dotenv from 'dotenv'
 import { tether } from './Tokens/Tether.js'
 import { web3 } from './web3/web3.js'
+import { web3 } from '../../web3/web3.js'
 
 dotenv.config()
 const app = express()
