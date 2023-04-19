@@ -9,14 +9,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 5433:5432
+      - 5433:5433
     volumes:
       - crypto_db_data:/var/lib/postgresql/data
   hasura_for_crypto:
     container_name: hasura_for_crypto
     image: hasura/graphql-engine:v2.16.1
     ports:
-      - 8080:8080
+      - 8081:8081
     depends_on:
       - crypto_postgres
     restart: always
