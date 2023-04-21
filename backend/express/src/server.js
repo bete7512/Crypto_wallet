@@ -1,12 +1,12 @@
 /* eslint-disable consistent-return */
-// /* eslint-disable import/named */
-// /* eslint-disable no-unused-vars */
-// /* eslint-disable no-console */
-// /* eslint-disable import/extensions */
-import express from 'express'
-import * as dotenv from 'dotenv'
-import { tether } from './Tokens/Tether.js'
-import { web3 } from './web3/web3.js'
+/* eslint-disable import/named */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable import/extensions */
+const express = require('express')
+const dotenv = require('dotenv')
+const { tether } = require('./Tokens/Tether.js')
+const { web3 } = require('./web3/web3.js')
 
 dotenv.config()
 const app = express()
