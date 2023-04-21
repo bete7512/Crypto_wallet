@@ -2,10 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable import/extensions */
-import randomEmail from 'random-email'
-import randomNames from 'random-names-generator'
 import bycrypt from 'bcrypt'
-import createMobilePhoneNumber from 'random-mobile-numbers'
 import * as dotenv from 'dotenv'
 import client from '../configuration/apollo.config.js'
 import { registerQuery } from '../constant/constant.js'
