@@ -37,18 +37,8 @@ const Tether_ABI = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'from', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
       {
         indexed: false,
         internalType: 'uint256',
@@ -61,16 +51,8 @@ const Tether_ABI = [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
     ],
     name: 'allowance',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -90,65 +72,35 @@ const Tether_ABI = [
   {
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'balanceOf',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'decimals',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'name',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'symbol',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'totalSupply',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -158,13 +110,7 @@ const Tether_ABI = [
       { internalType: 'uint256', name: '_value', type: 'uint256' },
     ],
     name: 'transfer',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'success',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: 'success', type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -175,16 +121,11 @@ const Tether_ABI = [
       { internalType: 'uint256', name: '_value', type: 'uint256' },
     ],
     name: 'transferFrom',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: 'success',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: 'success', type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
 ]
 
-export { Tether_ABI }
+
+export {Tether_ABI}

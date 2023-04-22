@@ -6,9 +6,8 @@ import * as dotenv from 'dotenv'
 // import Personal from 'web3-eth-personal'
 
 dotenv.config()
-const web3 = new Web3(process.env.INFURA_SEPOLIA_END_POINT)
-const account = web3.eth.accounts.create()
-const web3Object = {
-  account,
-}
-export { web3Object, web3 }
+const web3 = new Web3(process.env.INFURA_SEPOLIA_END_POINT, null, {
+  chainId:11155111
+})
+// const contract = new Contract()
+export { web3 }
