@@ -37,10 +37,10 @@
     </div>
     <div class="h-5"></div>
     <div class="-mt-24 space-x-4 flex container mx-auto justify-center items-center">
-      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00" class="" ></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00" class="" ></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00" class="" ></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00" class="" ></card>
     </div>
   </div>
 </template>

@@ -12,8 +12,8 @@
   </div> -->
 
   <!-- <div class="flex items-center justify-center  bg-yellow-200"> -->
-  <div class="bg-white rounded-3xl border shadow-xl sm:p-8 p-2 w-auto">
-    <div class="flex justify-between items-center mb-4">
+  <div class="bg-white  rounded-3xl border shadow-xl sm:p-8 p-2 w-auto">
+    <div class="flex justify-between  items-center mb-4">
       <button
         class="inline-flex items-center justify-center w-14 h-14 text-blue-100 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full"
       >
@@ -30,7 +30,7 @@
           />
         </svg>
       </button>
-      <div>
+      <div class="ml-2">
         <span class="font-bold text-green-500">+ $726 (15%)</span><br />
         <span class="font-medium text-xs text-gray-500 flex justify-end">0.382 coin</span>
       </div>

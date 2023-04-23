@@ -2,7 +2,7 @@
     <div class="bg-gradient-to-r z-0  mt-7 from-[#121D33] via-[#322779] to-green-400  w-full text-white flex justify-center items-center h-80">
         <div class="sm:flex block space-y-4  flex-wrap container  justify-between">
             <div>
-                <div class="font-bold text-5xl">E-commerce</div>
+                <div class="font-bold text-5xl">Santim Crypto</div>
             </div>
             <div>
                 <div class="font-bold">Conatct us</div>
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center items-center h-20 w-full ">copyright Protected @2022</div>
+    <!-- <div class="flex justify-center items-center h-20 w-full ">copyright Protected @2022</div> -->
 </template>
 
 <script setup>

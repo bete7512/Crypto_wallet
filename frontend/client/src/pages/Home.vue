@@ -2,8 +2,8 @@
 <template>
   <div class="w-full space-y-4 ">
     <Gradient></Gradient>
-    <Promote class="my-8"></Promote>
-    <Promote class="my-8"></Promote>
+    <Promote class=""></Promote>
+    <Promote class=""></Promote>
   
   </div>
 </template>
