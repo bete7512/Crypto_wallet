@@ -5,7 +5,7 @@
         <Nav class="lg:block hidden z-50"></Nav>
         <Mobile class="block sm:hidden"></Mobile>
       </div>
-      <div class="bg-[#dae0ff]">
+      <div class="bg-white">
         <slot></slot>
       </div>
     </div>

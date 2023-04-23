@@ -1,17 +1,19 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="w-full">
-  <Gradient></Gradient>
-
+  <div class="w-full space-y-4 ">
+    <Gradient></Gradient>
+    <Promote class="my-8"></Promote>
+    <Promote class="my-8"></Promote>
+  
   </div>
-
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import detectEthereumProvider from '@metamask/detect-provider'
 import send from '../components/send.vue'
-import Gradient from '../components/Home/Gradient.vue'  
+import Gradient from '../components/Home/Gradient.vue'
+import Promote from '../components/Home/Promote.vue'
 const isConnected = ref(false)
 
 async function connectWallet() {

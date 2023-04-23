@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gradient-to-r z-0  from-[#121D33] via-[#322779] to-green-400  w-full text-white flex justify-center items-center h-80">
+    <div class="bg-gradient-to-r z-0  mt-7 from-[#121D33] via-[#322779] to-green-400  w-full text-white flex justify-center items-center h-80">
         <div class="sm:flex block space-y-4  flex-wrap container  justify-between">
             <div>
                 <div class="font-bold text-5xl">E-commerce</div>

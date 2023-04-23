@@ -35,15 +35,14 @@
         </div>
       </div>
     </div>
-    <!-- <div class="h-20"></div> -->
-    <div class="-mt-20 space-x-4 flex container mx-auto justify-center items-center">
-        <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-        <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-        <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
-
+    <div class="h-5"></div>
+    <div class="-mt-24 space-x-4 flex container mx-auto justify-center items-center">
+      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
+      <card name="Bitcoin" symbol="BTC" price="49000.00"></card>
     </div>
   </div>
-
 </template>
 <script setup>
 import card from './card.vue'
