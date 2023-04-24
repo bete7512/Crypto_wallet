@@ -1,4 +1,5 @@
 <template>
+  
   <div class="bg-[#121D33] z-50  border-b border-gray-400  flex justify-center items-center">
     <div class="flex container mx-auto justify-center items-center z-50">
       <div class="flex    justify-between items-center text-white w-full px-10 h-20">

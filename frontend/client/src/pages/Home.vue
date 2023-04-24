@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="w-full space-y-4 ">
+    <send></send>
     <Gradient></Gradient>
     <Promote class=""></Promote>
     <Promote class=""></Promote>

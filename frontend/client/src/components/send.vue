@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center bg-gray-100">
     <h1 class="text-3xl font-bold mb-4">MetaMask Demo</h1>
-    <form @submit.prevent="sendTransaction">
+    <form @submit.prevent="send_token">
       <label class="block font-bold mb-2">Amount to Send:</label>
       <input
         v-model="amount"
@@ -25,9 +25,39 @@
 <script setup>
 import { ref } from 'vue'
 import Web3 from 'web3'
+import {Tether_ABI} from '../constants/Tether.ABI'
+const contract_address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
 const amount = ref('')
 const recipient = ref('')
-const sendTransaction = async () => {
+// const sendTransaction = async () => {
+//   try {
+//     if (typeof window.ethereum === 'undefined') {
+//       throw new Error('Please install MetaMask to use this feature')
+//     }
+//     await window.ethereum.request({ method: 'eth_requestAccounts' })
+//     const accounts = await window.ethereum.request({ method: 'eth_accounts' })
+//     const account = accounts[0]
+//     const web3 = new Web3(window.ethereum)
+//     const weiAmount = web3.utils.toWei(amount.value, 'ether')
+//     const hexAmount = '0x' + weiAmount.toString('hex')
+//     await window.ethereum.request({
+//       method: 'eth_sendTransaction',
+//       params: [
+//         {
+//           from: account,
+//           to: recipient.value,
+//           value: hexAmount
+//         }
+//       ]
+//     })
+//     amount.value = ''
+//     recipient.value = ''
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+const send_token = async () => {
   try {
     if (typeof window.ethereum === 'undefined') {
       throw new Error('Please install MetaMask to use this feature')
@@ -36,24 +66,18 @@ const sendTransaction = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' })
     const account = accounts[0]
     const web3 = new Web3(window.ethereum)
-    const weiAmount = web3.utils.toWei(amount.value, 'ether')
-    const hexAmount = '0x' + weiAmount.toString('hex')
-    await window.ethereum.request({
-      method: 'eth_sendTransaction',
-      params: [
-        {
-          from: account,
-          to: recipient.value,
-          value: hexAmount
-        }
-      ]
-    })
+    const contract = new web3.eth.Contract(Tether_ABI, contract_address)
+    const decimals = await contract.methods.decimals().call()
+    const amountInDecimal = Number(amount.value)
+    const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
+    await contract.methods.transfer(recipient.value, weiAmount.toString()).send({ from: account })
     amount.value = ''
     recipient.value = ''
   } catch (error) {
     console.error(error)
   }
 }
+
 </script>
 
 <style>

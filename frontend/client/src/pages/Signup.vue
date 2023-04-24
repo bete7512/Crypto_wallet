@@ -22,7 +22,7 @@
                 type="text"
                 v-model="fname"
                 placeholder="enter Your first name"
-                class="block w-full px-5 py-2  border-gray-500 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.fname }"
               />
               <div class="text-red-700">{{ errors.fname }}</div>
@@ -34,7 +34,7 @@
                 type="lname"
                 v-model="lname"
                 placeholder="enter last name"
-                class="block w-full px-5 py-2  border-gray-500 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.lname }"
               />
               <div class="text-red-700">{{ errors.lname }}</div>
@@ -47,7 +47,7 @@
                 type="text"
                 v-model="phone"
                 placeholder="enter your phone address"
-                class="block w-full px-5 py-2  border-gray-500 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.phone }"
               />
               <div class="text-red-700">{{ errors.phone }}</div>
@@ -60,7 +60,7 @@
                 type="password"
                 v-model="password"
                 placeholder="enter passwpord"
-                class="block w-full px-5 py-2  border-gray-500 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.password }"
               />
               <div class="text-red-700">{{ errors.password }}</div>
@@ -72,7 +72,7 @@
                 type="password"
                 v-model="cpassword"
                 placeholder="enter passwpord"
-                class="block w-full px-5 py-2  border-gray-500 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.cpassword }"
               />
               <div class="text-red-700">{{ errors.cpassword }}</div>
