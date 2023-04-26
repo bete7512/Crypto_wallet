@@ -1,0 +1,3 @@
+table:
+  name: crypto_currency_transaction
+  schema: public

@@ -25,4 +25,32 @@ const registerQuery = gql`
   }
 `
 
-export { registerQuery }
+
+const loginQuery = gql`
+query MyQuery($email: String = "") {
+  users(where: {email: {_eq: $email}}) {
+    first_name
+    last_name
+    email
+    id
+    password
+    roleId
+    role {
+      name
+    }
+  }
+}
+`
+
+const createWalletQuery = gql`
+mutation MyMutation($private_key: String = "", $public_key: String = "", $userId: Int = 10, $recovery_phrase: String = "") {
+  insert_wallet_one(object: {private_key: $private_key, public_key: $public_key, userId: $userId, recovery_phrase: $recovery_phrase}) {
+    id
+    private_key
+    public_key
+    userId
+  }
+}
+ ` 
+
+export { registerQuery,loginQuery,createWalletQuery }
