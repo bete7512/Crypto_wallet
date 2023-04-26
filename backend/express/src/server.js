@@ -1,17 +1,12 @@
-/* eslint-disable consistent-return */
-/* eslint-disable import/named */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable import/extensions */
-const express = require('express')
-const dotenv = require('dotenv')
-const { tether } = require('./Tokens/Tether.js')
-const { web3 } = require('./web3/web3.js')
+import express, { json, urlencoded } from 'express'
+import { config } from 'dotenv'
+import { tether } from './Tokens/Tether.js'
+import { web3 } from './web3/web3.js'
 
-dotenv.config()
+config()
 const app = express()
-app.use(express.json({ limit: '200mb' }))
-app.use(express.urlencoded({ extended: true }))
+app.use(json({ limit: '200mb' }))
+app.use(urlencoded({ extended: true }))
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello World' })
 })

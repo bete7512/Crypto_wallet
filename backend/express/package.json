@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Basic ",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "build": "babel ./src --out-dir ./build",
     "start": "node --experimental-modules --es-module-specifier-resolution=node server.js",
