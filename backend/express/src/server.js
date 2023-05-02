@@ -1,13 +1,12 @@
-
 import express, { json, urlencoded } from 'express'
 import { config } from 'dotenv'
 import { tether } from './Tokens/Tether.js'
 import { web3 } from './web3/web3.js'
+
 config()
 const app = express()
 app.use(json({ limit: '200mb' }))
 app.use(urlencoded({ extended: true }))
-
 
 app.post('/:route', async (req, res) => {
   try {
@@ -42,6 +41,7 @@ app.post('/event/:route', async (req, res) => {
     })
   }
 })
-app.listen(process.env.PORT, () => {
+
+app.listen(3000, () => {
   console.log('on the moon')
 })
