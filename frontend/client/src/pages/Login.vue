@@ -1,23 +1,20 @@
 <template>
-      <div class="py-5 min-h-screen px-6 bg-[#121D33]">
-    <div class="text-white flex justify-center items-center py-4 text-xl font-bold">Santim Crypto</div>
+  <div class="py-5 min-h-screen px-6 bg-[#121D33]">
+    <div class="text-white flex justify-center items-center py-4 text-xl font-bold">
+      Santim Crypto
+    </div>
     <div class="flex h-full justify-center items-center">
       <div class="p-6 sm:w-[500px] w-full bg-[#FFFFFF] rounded-md shadow-md">
         <div class="flex items-center justify-center">
-          <span class="text-sm font-bold text-gray-700 "
-            >Login to Your Santim Crypto Account</span
-          >
+          <span class="text-sm font-bold text-gray-700">Login to Your Santim Crypto Account</span>
         </div>
         <Form
-          class="justify-center  py-4 bg-white items-center  px-10"
+          class="justify-center py-4 bg-white items-center px-10"
           @submit.preventDefault="onSubmit"
           :validation-schema="schema"
           v-slot="{ errors }"
         >
           <div class="space-y-1">
-    
-
-
             <div class="space-y-3 w-full">
               <label class="font-bold text-sm text-[#353F52]">Email</label>
               <Field
@@ -25,7 +22,7 @@
                 type="text"
                 v-model="phone"
                 placeholder="enter your phone address"
-                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2 border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.phone }"
               />
               <div class="text-red-700">{{ errors.phone }}</div>
@@ -38,12 +35,11 @@
                 type="password"
                 v-model="password"
                 placeholder="enter passwpord"
-                class="block w-full px-5 py-2  border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                class="block w-full px-5 py-2 border-gray-600 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
                 :class="{ 'is-invalid': errors.password }"
               />
               <div class="text-red-700">{{ errors.password }}</div>
             </div>
-
           </div>
           <div class="text-red-600">{{ returnmessage }}</div>
           <div class="pt-2">
@@ -83,41 +79,39 @@
   </div>
 </template>
 <script setup>
-import { Form, Field } from 'vee-validate';
-import * as Yup from 'yup';
+import { Form, Field } from 'vee-validate'
+import * as Yup from 'yup'
 import { ref, onMounted } from 'vue'
-import { defineEmits } from 'vue';
-import router from '../router';
-import { UserStore } from '../stores/user_store';
+import { defineEmits } from 'vue'
+import router from '../router'
+import { UserStore } from '../stores/user_store'
 const email = ref('')
 const password = ref('')
 const schema = Yup.object().shape({
-    email: Yup.string()
-        .required('email is required'),
-    password: Yup.string()
-        .min(3, 'Password must be at least 3 characters')
-        .required('Password is required'),
+  email: Yup.string().required('email is required'),
+  password: Yup.string()
+    .min(3, 'Password must be at least 3 characters')
+    .required('Password is required')
 })
 const user = UserStore()
 const loginreturn = ref('')
 const loginprocess = ref(false)
 const onSubmit = async () => {
-    console.log('submit')
-    loginprocess.value = true
-    try {
-        loginreturn.value = await user.login(email.value, password.value)
-        loginprocess.value = false
-    }
-    catch (error) {
-        loginprocess.value = false
-        console.log(error);
-        loginreturn.value = error.message
-    }
+  console.log('submit')
+  loginprocess.value = true
+  try {
+    loginreturn.value = await user.login(email.value, password.value)
+    loginprocess.value = false
+  } catch (error) {
+    loginprocess.value = false
+    console.log(error)
+    loginreturn.value = error.message
+  }
 }
 </script>
 <style scoped>
 .overlay {
-    position: fixed;
-    background-color: rgb(0, 0, 0, 0.3);
+  position: fixed;
+  background-color: rgb(0, 0, 0, 0.3);
 }
 </style>
