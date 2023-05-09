@@ -25,7 +25,6 @@ function sendRaw(rawTx, key) {
     }, 5 * 60 * 1000);
   });
 }
-;
 function sendEther(sender, key, receiver, etherValue) {
   var rawTx = {
     nonce: _web["default"].toHex(_web["default"].eth.getTransactionCount(sender)),
@@ -36,13 +35,6 @@ function sendEther(sender, key, receiver, etherValue) {
     from: sender,
     chainId: 1
   };
-  if (etherValue.toString().toUpperCase() === 'ALL') {
-    var gasPrice = _web["default"].eth.gasPrice.toString(10);
-    var gasVlaue = 21000 * gasPrice;
-    var totalBalance = _web["default"].eth.getBalance(sender).toNumber();
-    rawTx.value = _web["default"].toHex(totalBalance - gasVlaue);
-  } else {
-    rawTx.value = _web["default"].toHex(_web["default"].toWei(etherValue, 'ether'));
-  }
+  rawTx.value = _web["default"].toHex(_web["default"].toWei(etherValue, 'ether'));
   sendRaw(rawTx, key);
 }

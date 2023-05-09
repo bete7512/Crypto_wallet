@@ -1,20 +1,13 @@
-import express, { json, urlencoded } from 'express'
-import { config } from 'dotenv'
-import { tether } from './Tokens/Tether.js'
-import { web3 } from './web3/web3.js'
-
 
 import express, { json, urlencoded } from 'express'
 import { config } from 'dotenv'
 import { tether } from './Tokens/Tether.js'
 import { web3 } from './web3/web3.js'
+import mysql from 'mysql'
 config()
 const app = express()
 app.use(json({ limit: '200mb' }))
 app.use(urlencoded({ extended: true }))
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hello World' })
-})
 
 
 app.post('/:route', async (req, res) => {
@@ -34,6 +27,23 @@ app.post('/:route', async (req, res) => {
   }
 })
 
+const connection = mysql.createConnection({
+  host: '109.70.148.48',
+  database: 'rensysengineerin_marketing',
+  user: 'rensysengineerin_rensys',
+  password: 'rensysEngineering22'
+})
+
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+  connection.query("SHOW TABLES", function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+    });
+});
+
+
 app.post('/event/:route', async (req, res) => {
   try {
     const handler  = require(`./event/${req.params.route}`)
@@ -50,6 +60,7 @@ app.post('/event/:route', async (req, res) => {
     })
   }
 })
-app.listen(process.env.PORT, () => {
+
+app.listen(3000, () => {
   console.log('on the moon')
 })
