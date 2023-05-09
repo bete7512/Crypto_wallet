@@ -15,15 +15,15 @@ export const UserStore = defineStore("user", {
         userLoggedin:localStorage.getItem('Apollotoken') ? true : false,
     }),
     actions: {
-        async signup(fname, lname, phone, password){
+        async signup(){
             try {
                 const response = await apolloclient.mutate({
                     mutation: SIGNUP,
                     variables: {
-                        fname: fname,
-                        lname: lname,
-                        phone: phone,
-                        password: password
+                        fname: this.first_name,
+                        lname: this.last_name,
+                        email: this.email,
+                        password: this.password
                     }
 
                 })
@@ -33,14 +33,14 @@ export const UserStore = defineStore("user", {
                 return err.message
             }
         },
-        async login(phone,password) {
+        async login(email,password) {
             try {
                 console.log(window.localStorage.getItem('Apollotoken'));
                 window.localStorage.removeItem('Apollotoken')
                 const response = await apolloclient.mutate({
                     mutation: LOGIN,
                     variables: {
-                        phone: phone,
+                        email: email,
                         password: password
                     }
                 })

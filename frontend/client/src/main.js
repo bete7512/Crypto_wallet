@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import Notifications from '@kyvg/vue3-notification'
+import velocity from 'velocity-animate'
 library.add(fas, far, fab)
 dom.watch();
 const pinia = createPinia()
@@ -28,5 +30,6 @@ app.component('main-layout',Main)
 app.component('empty-layout',Empty)
 app.use(pinia)
 app.use(router)
+app.use(Notifications, { velocity })
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app');
