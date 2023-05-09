@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { provideApolloClient } from '@vue/apollo-composable';
 import apolloclient from '../apollo.config'
-// import { } from '../constants/query'
-let  SIGNUP,LOGIN,USER_PROFILE
-import router from '../router/index'
+import {SIGNUP,LOGIN} from '../constants/query'
+import {notify} from '@kyvg/vue3-notification'
+import router from '../router/index'   
 provideApolloClient(apolloclient);
 export const UserStore = defineStore("user", {
     state: () => ({
@@ -12,31 +12,37 @@ export const UserStore = defineStore("user", {
         last_name:'', 
         email:'',
         password:'', 
-        userLoggedin:localStorage.getItem('Apollotoken') ? true : false,
+        userLoggedin: localStorage.getItem('crypto-token') ? true : false,
     }),
     actions: {
-        async signup(){
+        async signup(first_name,last_name,email,password){
             try {
                 const response = await apolloclient.mutate({
                     mutation: SIGNUP,
                     variables: {
-                        fname: this.first_name,
-                        lname: this.last_name,
-                        email: this.email,
-                        password: this.password
+                        first_name: first_name,
+                        last_name: last_name,
+                        email: email,
+                        password: password
                     }
-
                 })
-                return response.data
+                notify({
+                    title:"You have successfully registered",
+                    type:"success" 
+                })
+                return response.data.register.success
             } catch (err) {
                 console.log(err);
+                notify({
+                    title:err.message,
+                    type:"error" 
+                })
                 return err.message
             }
         },
         async login(email,password) {
             try {
-                console.log(window.localStorage.getItem('Apollotoken'));
-                window.localStorage.removeItem('Apollotoken')
+                window.localStorage.removeItem('crypto-token')
                 const response = await apolloclient.mutate({
                     mutation: LOGIN,
                     variables: {
@@ -44,32 +50,41 @@ export const UserStore = defineStore("user", {
                         password: password
                     }
                 })
-                localStorage.setItem('Apollotoken', response.data.login.accestoken)
-                console.log("njhnjhhhhhhhhhhhhhhhhhhhhhhhjh",response.data);
-                if(window.localStorage.getItem('Apollotoken')){
-                    await this.user_profile(response.data.login.id)
-                    router.push('/')
-                }
-                return response.data
+                localStorage.setItem('crypto-token', response.data.login.access_token)
+                console.log(localStorage.getItem('crypto-token')); 
+                notify({
+                    title:"You have successfully logged in",     
+                    type:"success"       
+                })
+                router.push('/')
+                return 'Successfully Login'
             } catch (err) {
                 console.log(err);
+                notify({
+                    title:err.message,   
+                    type:"error"      
+                })
                 return err.message
             }
         },
-        async user_profile(){
-            try{
-                const response = await apolloclient.query({
-                    query: USER_PROFILE,
-                })
-                console.log(response.data);
-                this.user = response.data
-                return response.data
-            }catch(err){
-                console.log(err);
-                return err.message
-            }
-        }
-        
+        // async user_profile(){
+        //     try{
+        //         const response = await apolloclient.query({
+        //             query: USER_PROFILE,
+        //         })
+        //         console.log(response.data);
+        //         this.user = response.data
+        //         return response.data
+        //     }catch(err){
+        //         console.log(err);
+        //         return err.message
+        //     }
+        // }
+        logout(){ 
+            localStorage.removeItem('crypto-token')
+            this.userLoggedin = false
+            router.push('/login')
+        }     
 
     },
     getters: {

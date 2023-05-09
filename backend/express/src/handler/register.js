@@ -23,7 +23,7 @@ const handler = async (req, res) => {
       message: 'Unexpected Error Occured',
     })
   }
-  return res.status(200).json({ success:'trh' }) 
+  return res.status(200).json({ success:'Successfully Registered' }) 
 
 }
 

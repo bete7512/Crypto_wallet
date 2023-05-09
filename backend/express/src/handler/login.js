@@ -1,5 +1,8 @@
 import client from '../configuration/apollo.config'
 import jwt from 'jsonwebtoken'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 const bcrypt = require('bcrypt')
 import { loginQuery } from '../constant/constant'
 const handler = async (req, res) => {
@@ -24,16 +27,13 @@ const handler = async (req, res) => {
     }
     const token = jwt.sign(
       {
-        'http://hasura.io/jwt/claims': {
-          'x-hasura-allowed-roles': ['user'],
+        'https://hasura.io/jwt/claims': {
+          'x-hasura-allowed-roles': ['users', 'admins'],
           'x-hasura-default-role': user.role.name,
-          'x-hasura-user-id': user.id,
+          'x-hasura-user-id': user.id.toString(),
         },
       },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '1d',
-      },
+      process.env.HASURA_GRAPHQL_JWT_SECRET,
     )
     return res.status(200).json({
       access_token: token,
