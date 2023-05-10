@@ -3,13 +3,14 @@
     <div class="flex justify-center items-center h-screen">
       <button @click="connectWallet" class="bg-blue-500 text-white py-2 px-4 rounded">Connect Metamask</button>
     </div>
-    <send></send>
+    <!-- <send></send> -->
+    <router-link to="/test">test</router-link>
   </template>
   
   <script setup>
   import { ref } from 'vue'
   import detectEthereumProvider from '@metamask/detect-provider'
-  import send from '../components/send.vue';
+  // import send from '../components/send.vue';
   const isConnected = ref(false)
   
   async function connectWallet() {
