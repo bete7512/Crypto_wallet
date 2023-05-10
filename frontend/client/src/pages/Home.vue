@@ -5,7 +5,6 @@
     <Promote class=""></Promote>
 </div>
 </template>
-</template>
 <script setup>
 import { ref,onMounted } from 'vue'
 import send from '../components/send.vue'

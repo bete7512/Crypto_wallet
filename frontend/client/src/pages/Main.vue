@@ -1,4 +1,5 @@
 <template>
+  <!-- https://vscode.dev/profile/github/4f025d1dabc23d65276ae00ab03dd6d7 -->
   <div class="flex w-full h-screen gap-2">
     <div class="w-72 h-full space-x-2 bg-slate-200">
       <router-link
