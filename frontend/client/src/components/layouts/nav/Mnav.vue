@@ -1,9 +1,9 @@
 <template>
     <div class="lg:hidden flex justify-between items-center px-10 bg-[#6DB0B0] py-5">
-        <div class="text-lg font-bold">
-            BS
+        <div class="text-lg text-black font-bold">
+            Santim
         </div>
-        <button @click="()=>isNav=true">
+        <button @click="nav">
             <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-list"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -11,145 +11,15 @@
             </svg>
         </button>
     </div>
-    <Dropped v-if="isNav" v-on:cancel="isNav = false"></Dropped>
-
-      <!-- <div class="flex container justify-center items-center z-50">
-      <div class="flex justify-between items-center text-black bg-[#ffffff] px-10 h-20">
-        <router-link to="/" class="text-4-xl font-bold">E-commerce</router-link>
-  
-        <div class="flex h-full justify-between items-center space-x-3">
-          <div
-            v-if="!user.userLoggedin"
-            class="flex h-full justify-center items-center space-x-1"
-          >
-            <router-link
-              to="/login"
-              class="flex h-full justify-center items-center hover:bg-red-700 hover:text-white px-3 space-x-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                class="bi bi-box-arrow-in-right"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
-                />
-              </svg>
-              <span>Login</span>
-            </router-link>
-          </div>
-  
-          <div class="flex space-x-1 h-full justify-center items-center">
-            <router-link
-              to="/carts"
-              class="text-lg h-full justify-center items-center hover:bg-red-900 hover:text-white px-4 flex space-x-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                class="bi bi-cart"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
-                />
-              </svg>
-            </router-link>
-          </div>
-          <div class="space-x-1 h-full">
-            <router-link
-              to="/favorite"
-              class="text-lg h-full justify-center items-center hover:bg-red-900 hover:text-white px-4 flex space-x-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                class="bi bi-heart-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                />
-              </svg>
-            </router-link>
-          </div>
-          <div class="relative" v-if="user.userLoggedin">
-            <button
-              @click="dropdownOpen = !dropdownOpen"
-              class="relative z-10 block w-12 h-12 bg-red-500 overflow-hidden rounded-full shadow focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-person inline-flex"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
-                />
-              </svg>
-            </button>
-            <div
-              v-show="dropdownOpen"
-              @click="dropdownOpen = false"
-              class="fixed inset-0 z-10 w-full h-full"
-            ></div>
-  
-            <transition
-              enter-active-class="transition duration-150 ease-out transform"
-              enter-from-class="scale-95 opacity-0"
-              enter-to-class="scale-100 opacity-100"
-              leave-active-class="transition duration-150 ease-in transform"
-              leave-from-class="scale-100 opacity-100"
-              leave-to-class="scale-95 opacity-0"
-            >
-              <div
-                v-show="dropdownOpen"
-                class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl"
-              >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-                  >Profile</a
-                >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-                  >Announcement</a
-                >
-  
-                <button
-                  @click="logout"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
-                >
-                  Log out
-                </button>
-              </div>
-            </transition>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    <Dropped  v-on:cancel="nav"></Dropped>
 </template>
 <script setup>
 import Dropped from './Mobile.vue';
 import {ref} from 'vue'
 const isNav = ref(false)
+function nav() {
+    isNav.value = !isNav.value
+}
 </script>
 <style lang="">
     

@@ -1,9 +1,8 @@
 <template>
   <div class="flex justify-center items-center">
     <div class="w-full">
-      <div class="sticky z-50 top-0">
-        <Nav class="lg:block hidden z-50"></Nav>
-        <Mobile class="block sm:hidden"></Mobile>
+      <div class=" w-full stick fixed  ">
+        <Nav class=" z-50"></Nav>
       </div>
       <div class="bg-white">
         <slot></slot>
@@ -28,7 +27,7 @@ onMounted(async () => {
 </script>
 
 <style>
-.sticky {
+.stick{
   position: sticky;
   top: 0;
   z-index: 999;

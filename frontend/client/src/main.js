@@ -10,6 +10,7 @@ import { VueClipboard } from '@soerenmartius/vue3-clipboard'
 import piniaPersist from 'pinia-plugin-persist'
 import Main from './components/layouts/Main.vue'
 import Empty from './components/layouts/Empty.vue'
+import Authed from './components/layouts/authed.vue'
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -29,6 +30,7 @@ const app = createApp({
   });
 app.component('main-layout',Main)
 app.component('empty-layout',Empty)
+app.component('authed-layout',Authed) 
 app.use(pinia)
 app.use(router)
 app.use(VueClipboard)
