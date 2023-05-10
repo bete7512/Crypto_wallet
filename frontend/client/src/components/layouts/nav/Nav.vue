@@ -12,20 +12,20 @@
         </div>
         <div v-if="user.userLoggedin" class="flex items-center space-x-2">
           <div class="flex h-full justify-center items-center space-x-1">
-            <router-link
-              to="/login"
-              class="flex h-1/2 justify-center rounded-lg items-center bg-[#121D33] border border-white hover:text-white px-3 space-x-2"
+            <button
+              @click="sending = true"
+              class="flex h-10 px-6 justify-center rounded-lg items-center bg-white text-black border border-gray-700 hover:bg-slate-200 hover:border-blue-700 hover:text-blue-700 space-x-2"
             >
-              Login
-            </router-link>
+              Send
+            </button>
           </div>
           <div class="flex h-full justify-center items-center space-x-1">
-            <router-link
-              to="/signup"
-              class="flex h-1/2 justify-center items-center bg-white text-black rounded-lg px-3 space-x-2"
+            <button
+              @click="recieving = true"
+              class="flex h-10 justify-center items-center border border-gray-700 hover:bg-slate-200 hover:border-blue-700 hover:text-blue-700 bg-white text-black rounded-lg px-3 space-x-2"
             >
-              Signup
-            </router-link>
+              Recieve
+            </button>
           </div>
           <div class="relative z-50">
             <button
@@ -100,18 +100,29 @@
       </div>
     </div>
   </div>
+  <send v-if="sending == true" v-on:close="sending = false"></send>
+  <recieve v-if="recieving == true" v-on:close="recieving = false"></recieve>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { UserStore } from '../../../stores/user_store'
-import router from '../../../router';
+import router from '../../../router'
+import recieve from '../../modals/recieve.vue'
+import send from '../../modals/send.vue'
 const dropdownOpen = ref(false)
+const sending = ref(false)
+const recieving = ref(false)
 const show_notification = ref(false)
 const user = UserStore()
+onMounted(async () => {
+  if (!user.userLoggedin) router.push('/login')
+  if (user.userLoggedin) await user.user_profile()
+  console.log(user.user);
+})
 const logout = () => {
   user.logout()
   router.push('/login')
-} 
+}
 </script>
 <style></style>

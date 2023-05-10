@@ -5,6 +5,7 @@ import router from './router/index'
 import apolloclient from './apollo.config'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import './index.css'
+import { VueClipboard } from '@soerenmartius/vue3-clipboard'
 
 import piniaPersist from 'pinia-plugin-persist'
 import Main from './components/layouts/Main.vue'
@@ -30,6 +31,7 @@ app.component('main-layout',Main)
 app.component('empty-layout',Empty)
 app.use(pinia)
 app.use(router)
+app.use(VueClipboard)
 app.use(Notifications, { velocity })
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app');

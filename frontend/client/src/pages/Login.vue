@@ -100,7 +100,7 @@ const onSubmit = async () => {
   loginprocess.value = true
   try {
     loginreturn.value = await user.login(email.value, password.value)
-    location.reload()
+    
   } catch (error) {
     console.log(error)
     loginreturn.value = error.message

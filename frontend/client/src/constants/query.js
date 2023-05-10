@@ -14,3 +14,51 @@ mutation MyMutation($email: String = "", $password: String = "") {
     }
   }
   `
+
+  export const GET_TOKENS = gql`
+  query MyQuery {
+    tokens {
+      created_at
+      id
+      name
+      network_id
+      symbol
+      total_supply
+      url_address
+      network {
+        name
+        id
+      }
+    }
+  }
+  `
+
+  export const GET_NETWORKS = gql`
+  query MyQuery {
+    network {
+      name
+      id
+      tokens {
+        name
+        id
+      }
+    }
+  }
+`  
+
+export const USER_PROFILE = gql`
+query MyQuery {
+  users {
+    first_name
+    email
+    last_name
+    id
+    wallets {
+      public_key
+      private_key
+      recovery_phrase
+      id
+    }
+  }
+}
+`

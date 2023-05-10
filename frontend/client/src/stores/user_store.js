@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { provideApolloClient } from '@vue/apollo-composable';
 import apolloclient from '../apollo.config'
-import {SIGNUP,LOGIN} from '../constants/query'
+import {SIGNUP,LOGIN,USER_PROFILE} from '../constants/query'
 import {notify} from '@kyvg/vue3-notification'
 import router from '../router/index'   
 provideApolloClient(apolloclient);
@@ -56,7 +56,9 @@ export const UserStore = defineStore("user", {
                     title:"You have successfully logged in",     
                     type:"success"       
                 })
-                router.push('/')
+                router.push('/home')
+                location.replace('/home')
+                // await this.user_profile()
                 return 'Successfully Login'
             } catch (err) {
                 console.log(err);
@@ -67,19 +69,19 @@ export const UserStore = defineStore("user", {
                 return err.message
             }
         },
-        // async user_profile(){
-        //     try{
-        //         const response = await apolloclient.query({
-        //             query: USER_PROFILE,
-        //         })
-        //         console.log(response.data);
-        //         this.user = response.data
-        //         return response.data
-        //     }catch(err){
-        //         console.log(err);
-        //         return err.message
-        //     }
-        // }
+        async user_profile(){
+            try{
+                const response = await apolloclient.query({
+                    query: USER_PROFILE,
+                })
+                console.log(response.data);
+                this.user = response.data.users[0]
+                return response.data
+            }catch(err){
+                console.log(err);
+                return err.message
+            }
+        },
         logout(){ 
             localStorage.removeItem('crypto-token')
             this.userLoggedin = false
