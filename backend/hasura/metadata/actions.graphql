@@ -1,46 +1,24 @@
 type Mutation {
-  fileupload(
-    name: String!
-    type: String!
-    base64str: String!
-  ): fileoutput
-}
-
-type Mutation {
   login(
-    inputs: inputs!
-  ): outputs
+    email: String!
+    password: String!
+  ): login_output
 }
 
 type Mutation {
-  signup(
-    input: input_reg!
-  ): output_reg
+  register(
+    first_name: String!
+    last_name: String!
+    email: String!
+    password: String!
+  ): signup_output
 }
 
-input inputs {
-  email: String!
-  password: String!
+type login_output {
+  access_token: String!
 }
 
-input input_reg {
-  fname: String!
-  lname: String!
-  email: String!
-  username: String!
-  password: String!
-  address: String!
-}
-
-type outputs {
-  accestoken: String!
-}
-
-type output_reg {
+type signup_output {
   success: String!
-}
-
-type fileoutput {
-  file_path: String!
 }
 

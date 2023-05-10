@@ -1,9 +1,11 @@
 import { web3 } from "../web3/web3.js"
-import { Tether_ABI } from "../constant/constant.js"
-// import { Contract } from "web3-eth-contract"
+import { Tegera_ABI } from "../constant/Tegera_sepolia_ABI.js"
+/**
+ * Sepolia Tegera Token Contract Address
+ * Tegera = 0x09871Adb124aab581046EA38c26C6af2e88F280E
+ * 
+ */
+const contractAddress = '0x09871Adb124aab581046EA38c26C6af2e88F280E'
+const tegera = new web3.eth.Contract(Tegera_ABI, contractAddress)
 
-const address = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2'
-const contractAddress = '0x11be89f241063c13dB88E03BFb8502e8595168E2'
-const tether = new web3.eth.Contract(Tether_ABI, contractAddress)
-
-export { tether }// 
+export { tegera }// 

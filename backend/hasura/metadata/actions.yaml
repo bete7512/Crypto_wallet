@@ -1,25 +1,16 @@
 actions:
-  - name: fileupload
-    definition:
-      kind: synchronous
-      handler: http://host.docker.internal:3000/fileupload
-    permissions:
-      - role: public
   - name: login
     definition:
       kind: synchronous
-      handler: http://host.docker.internal:3000/login
-  - name: signup
+      handler: http://18e6-213-55-102-49.ngrok.io/login
+  - name: register
     definition:
       kind: synchronous
-      handler: http://host.docker.internal:3000/signup
+      handler: http://0902-213-55-102-49.ngrok.io/register
 custom_types:
   enums: []
-  input_objects:
-    - name: inputs
-    - name: input_reg
+  input_objects: []
   objects:
-    - name: outputs
-    - name: output_reg
-    - name: fileoutput
+    - name: login_output
+    - name: signup_output
   scalars: []

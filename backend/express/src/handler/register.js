@@ -1,41 +1,30 @@
-/* eslint-disable import/named */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable import/extensions */
-import randomEmail from 'random-email'
-import randomNames from 'random-names-generator'
-import bycrypt from 'bcrypt'
-import createMobilePhoneNumber from 'random-mobile-numbers'
+import { v4 as uuidv4 } from 'uuid'
 import * as dotenv from 'dotenv'
 import client from '../configuration/apollo.config.js'
 import { registerQuery } from '../constant/constant.js'
-import { web3, web3Object } from '../web3/web3.js'
-import { user } from '../constant/user.js'
-
+import EventEmitter from 'events'
+import create_wallet from '../events/create_wallet.js'
+const bcrypt = require('bcrypt');     
+const eventEmitter = new EventEmitter()
+eventEmitter.on('create_wallet', (responce) => {
+  create_wallet(responce)
+  })
 const handler = async (req, res) => {
-  const { account } = web3Object
-  user.privateKey = account.privateKey
-  user.publicKey = account.address
-  user.email = randomEmail({ domain: 'gmail.com' })
-  user.username = user.email
-  user.fName = randomNames.random()
-  user.lName = randomNames.random()
-  user.password = bycrypt.hashSync('password', 10)
-  user.phone = createMobilePhoneNumber('TR')
-  let newUser
-  const onTest = async () => {
-    try {
-      const userRegister = await client.request(registerQuery, {
-        ...user,
-      })
-      newUser = userRegister
-      console.log(`am registered${userRegister.insert_users_one}`)
-    } catch (error) {
-      console.log(error)
-    }
+
+  const { first_name,last_name,email, password } = req.body.input
+  const salt =  bcrypt.genSaltSync(10)
+  const hashedPassword =  bcrypt.hashSync(password, salt); 
+  try {
+    const {insert_users_one:user} = await client.request(registerQuery, {  first_name,last_name,email, password:hashedPassword })   
+    eventEmitter.emit('create_wallet', user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({
+      message: 'Unexpected Error Occured',
+    })
   }
-  await onTest()
-  res.send(newUser)
+  return res.status(200).json({ success:'Successfully Registered' }) 
+
 }
 
-export { handler }
+module.exports  = handler  
