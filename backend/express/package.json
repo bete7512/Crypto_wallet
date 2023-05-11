@@ -27,7 +27,9 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
+    "alchemy-sdk": "^2.8.3",
     "bcrypt": "^5.1.0",
+    "bignumber": "^1.1.0",
     "bip39": "^3.1.0",
     "dotenv": "^16.0.3",
     "ethereumjs-tx": "^2.1.2",
@@ -37,6 +39,7 @@
     "graphql-request": "^5.1.0",
     "hdkey": "^2.1.0",
     "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
     "web3": "^1.8.1",
     "web3-eth-accounts": "^1.8.1",
     "web3-eth-contract": "^1.8.1",

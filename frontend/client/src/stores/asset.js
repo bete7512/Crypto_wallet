@@ -47,7 +47,13 @@ export const assetStore = defineStore("asset", {
                 })
                 return err.message
             }       
-        } ,
+        },
+        // async send_tokens(token_id,amount,receiver_address){
+        //     try {
+        //         const response = await apolloclient.mutate({     
+        //             mutation: SEND_TOKENS,      
+        //             variables: {
+
 
     // async send_tokens(token_id,amount,receiver_address){
     //     try {

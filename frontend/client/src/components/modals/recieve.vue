@@ -36,8 +36,7 @@
               <button class="copy-button">
                 <font-awesome-icon :icon="['fas', 'copy']" />
               </button>
-              <div id="hex">{{ HEX }}</div>
-              <button @click="copyColor('hex')">Copy</button>
+            
             </div>
             
           </div>
@@ -66,10 +65,45 @@ const discard = () => {
   emit('close')
 }
 
-function copyColor(id){
-    var copyText = document.getElementById(id).textContent;
-    navigator.clipboard.writeText(copyText);
-   }
-   //
+document.addEventListener('DOMContentLoaded', function() {
+  function copyToClipboard(text) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          // Success - Optional: Provide feedback to the user
+          alert('Address copied to clipboard!');
+        })
+        .catch((error) => {
+          // Error occurred
+          console.error('Failed to copy text: ', error);
+        });
+    } else {
+      // Fallback for browsers that don't support Clipboard API
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      // Optional: Provide feedback to the user
+      alert('Address copied to clipboard!');
+    }
+  }
+
+  const copyButton = document.querySelector('.copy-button');
+  const addressText = document.querySelector('.flex div');
+
+  copyButton.addEventListener('click', function() {
+    const address = addressText.textContent;
+    
+    if (address) {
+      copyToClipboard(address);
+    } else {
+      console.error('Address is not defined.');
+    }
+  });
+});
+
 </script>
 <style></style>
