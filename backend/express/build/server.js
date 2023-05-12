@@ -54,40 +54,58 @@ app.post('/:route', /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }());
-app.post('/event/:route', /*#__PURE__*/function () {
+app.get('/', /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var handler;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.prev = 0;
+          return _context2.abrupt("return", res.status(200).json({
+            message: 'Welcome to Sepolia API'
+          }));
+        case 1:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+app.post('/event/:route', /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
+    var handler;
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.prev = 0;
           handler = require("./event/".concat(req.params.route));
           if (handler) {
-            _context2.next = 4;
+            _context3.next = 4;
             break;
           }
-          return _context2.abrupt("return", res.status(400).json({
+          return _context3.abrupt("return", res.status(400).json({
             message: 'Event not found'
           }));
         case 4:
           handler(req, res);
-          _context2.next = 11;
+          _context3.next = 11;
           break;
         case 7:
-          _context2.prev = 7;
-          _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
-          return _context2.abrupt("return", res.status(400).json({
+          _context3.prev = 7;
+          _context3.t0 = _context3["catch"](0);
+          console.log(_context3.t0);
+          return _context3.abrupt("return", res.status(400).json({
             message: 'unexpected error occured'
           }));
         case 11:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee3, null, [[0, 7]]);
   }));
-  return function (_x3, _x4) {
-    return _ref2.apply(this, arguments);
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }());
 app.listen(7000, function () {

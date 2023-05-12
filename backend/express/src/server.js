@@ -25,7 +25,11 @@ app.post('/:route', async (req, res) => {
     })
   }
 })
-
+app.get('/', async (req, res) => {  
+  return res.status(200).json({   
+    message: 'Welcome to Sepolia API',     
+  })
+})
 app.post('/event/:route', async (req, res) => {
   try {
     const handler  = require(`./event/${req.params.route}`)
