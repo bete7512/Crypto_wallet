@@ -13,6 +13,7 @@ export const UserStore = defineStore("user", {
         email:'',
         password:'', 
         userLoggedin: localStorage.getItem('crypto-token') ? true : false,
+        public_key:'',
     }),
     actions: {
         async signup(first_name,last_name,email,password){
@@ -76,6 +77,8 @@ export const UserStore = defineStore("user", {
                 })
                 console.log(response.data);
                 this.user = response.data.users[0]
+                this.public_key = response.data.users[0].wallets[0].public_key 
+                console.log(this.user);
                 return response.data
             }catch(err){
                 console.log(err);

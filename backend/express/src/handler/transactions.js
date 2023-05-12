@@ -62,7 +62,7 @@ const handler = async (req, res) => {
     const address = user.wallets[0].public_key
     console.log(address);
     const { ethereumSepolia } = await node.request(WALLET_TRANSACTIONS, {
-      address: address
+      address: address,
     })
     console.log(ethereumSepolia.walletByAddress.transactions.edges   );
     return res
