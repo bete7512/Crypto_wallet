@@ -6,6 +6,7 @@ import { GraphQLClient } from 'graphql-request'
 import * as dotenv from 'dotenv'
 const Tegera_Address = '0x09871Adb124aab581046EA38c26C6af2e88F280E'           
 const Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
+//0x222fB5507acD3Da78351Be60271fa9537b07Cdc3
 dotenv.config()
 
 const config = {

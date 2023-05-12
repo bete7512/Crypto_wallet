@@ -35,7 +35,7 @@
               class="flex h-12 items-center outline-2 text-gray-600 bg-[#E5E7EB] cursor-pointer justify-center w-full sm:px-4 px-3 text-lg text-boldborder-gray-800 border focus:outline-none rounded-lg transition duration-150 ease-in-out"
             >
               <option disabled value="" class="">Select Tokens</option>
-              <option class="" v-for="token in tokens" :key="token.id" :value="token.id">
+              <option class="" v-for="token in tokens" :key="token.id" :value="token">
                 <!-- {{ token.symbol }} -->
                 {{ token.name }}
               </option>
@@ -100,8 +100,10 @@ import { assetStore } from '../../stores/asset'
 import detectEthereumProvider from '@metamask/detect-provider'
 import Web3 from 'web3'
 import { notify } from '@kyvg/vue3-notification'
-import {Tether_ABI} from '../../constants/Tether.ABI'
-const contract_address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
+import {Tether_ABI,Tether_Address} from '../../constants/Tether.ABI'
+import { Tegera_ABI,Tegera_Address } from '../../constants/Tegera.ABI'
+// const Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
+
 const emit = defineEmits(['close', 'submit'])
 const asset = assetStore() 
 const token_id = ref('')
@@ -179,11 +181,26 @@ const send_token = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' })
     const account = accounts[0]
     const web3 = new Web3(window.ethereum)
-    const contract = new web3.eth.Contract(Tether_ABI, contract_address)
-    const decimals = await contract.methods.decimals().call()
-    const amountInDecimal = Number(amount.value)
-    const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
-    await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
+    if(token_id.value.name == 'ጠገራ'){
+      const contract = new web3.eth.Contract(Tegera_ABI, Tegera_Address)
+      const decimals = await contract.methods.decimals().call()
+      const amountInDecimal = Number(amount.value)
+      const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
+      await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
+    }                
+    else{
+      console.log(token_id);
+      const contract = new web3.eth.Contract(Tether_ABI, Tether_Address)
+      const decimals = await contract.methods.decimals().call()
+      const amountInDecimal = Number(amount.value)
+      const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
+      await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
+    }
+    // const contract = new web3.eth.Contract(Tether_ABI, Tether_Address)
+    // const decimals = await contract.methods.decimals().call()
+    // const amountInDecimal = Number(amount.value)
+    // const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
+    // await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
     amount.value = ''
     address.value = ''
     notify({
