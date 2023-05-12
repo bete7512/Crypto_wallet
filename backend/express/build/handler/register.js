@@ -49,7 +49,7 @@ var handler = /*#__PURE__*/function () {
           }));
         case 15:
           return _context.abrupt("return", res.status(200).json({
-            success: 'trh'
+            success: 'Successfully Registered'
           }));
         case 16:
         case "end":
