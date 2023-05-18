@@ -1,7 +1,7 @@
 import client from '../configuration/apollo.config'
 import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
-import bcrypt from 'bcrypt' 
+import bcrypt from 'bcrypt'
 dotenv.config()
 import { loginQuery } from '../constant/constant'
 const handler = async (req, res) => {
@@ -14,11 +14,7 @@ const handler = async (req, res) => {
         message: 'User Not Found',
       })
     }
-
-    
     const user = responce.users[0]
-
-  
     const isPasswordCorrect = await bcrypt.compare(
       req.body.input.password,
       user.password,
