@@ -15,6 +15,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 // import Contract from 'web3-eth-contract'
 // import Personal from 'web3-eth-personal'
+
 dotenv.config();
 var web3 = new _web["default"]('wss://sepolia.infura.io/ws/v3/7adda8f39ad04bf2b5709fe8a04fbbdd');
 // process.env.INFURA_SEPOLIA_END_POINT)
