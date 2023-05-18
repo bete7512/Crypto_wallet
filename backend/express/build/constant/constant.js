@@ -8,7 +8,6 @@ exports.registerQuery = exports.loginQuery = exports.createWalletQuery = void 0;
 var _taggedTemplateLiteral2 = _interopRequireDefault(require("@babel/runtime/helpers/taggedTemplateLiteral"));
 var _graphqlRequest = require("graphql-request");
 var _templateObject, _templateObject2, _templateObject3;
-/* eslint-disable import/prefer-default-export */
 var registerQuery = (0, _graphqlRequest.gql)(_templateObject || (_templateObject = (0, _taggedTemplateLiteral2["default"])(["\n  mutation MyMutation(\n    $email: String!\n    $first_name: String!\n    $last_name: String!\n    $password: String!\n  ) {\n    insert_users_one(\n      object: {\n        email: $email\n        first_name: $first_name\n        last_name: $last_name\n        password: $password\n      }\n    ) {\n      email\n      first_name\n      last_name\n      created_at\n      id\n    }\n  }\n"])));
 exports.registerQuery = registerQuery;
 var loginQuery = (0, _graphqlRequest.gql)(_templateObject2 || (_templateObject2 = (0, _taggedTemplateLiteral2["default"])(["\nquery MyQuery($email: String = \"\") {\n  users(where: {email: {_eq: $email}}) {\n    first_name\n    last_name\n    email\n    id\n    password\n    roleId\n    role {\n      name\n    }\n  }\n}\n"])));
