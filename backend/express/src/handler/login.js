@@ -1,9 +1,8 @@
 import client from '../configuration/apollo.config'
 import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
-
+import bcrypt from 'bcrypt' 
 dotenv.config()
-const bcrypt = require('bcrypt')
 import { loginQuery } from '../constant/constant'
 const handler = async (req, res) => {
   try {
