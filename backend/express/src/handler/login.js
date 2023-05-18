@@ -15,7 +15,7 @@ const handler = async (req, res) => {
       })
     }
     const user = responce.users[0]
-    const isPasswordCorrect = bcrypt.compare(
+    const isPasswordCorrect = await bcrypt.compare(
       req.body.input.password,
       user.password,
     )
