@@ -14,7 +14,11 @@ const handler = async (req, res) => {
         message: 'User Not Found',
       })
     }
+
+    
     const user = responce.users[0]
+
+  
     const isPasswordCorrect = await bcrypt.compare(
       req.body.input.password,
       user.password,
@@ -38,7 +42,7 @@ const handler = async (req, res) => {
       access_token: token,
     })
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
     return res.status(400).json({
       message: 'Unexpected Error Occured',
     })
