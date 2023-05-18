@@ -108,6 +108,24 @@ app.post('/event/:route', /*#__PURE__*/function () {
     return _ref3.apply(this, arguments);
   };
 }());
+app.get('/*', /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          return _context4.abrupt("return", res.status(200).json({
+            message: 'Welcome to Any route'
+          }));
+        case 1:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}());
 app.listen(7000, function () {
   console.log('on the moon');
 });
