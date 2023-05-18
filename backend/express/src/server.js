@@ -46,7 +46,11 @@ app.post('/event/:route', async (req, res) => {
     })
   }
 })
-
+app.get('/*', async (req, res) => { 
+  return res.status(200).json({   
+    message: 'Welcome to Any route',     
+  })
+})
 app.listen(7000, () => {
   console.log('on the moon')
 })
