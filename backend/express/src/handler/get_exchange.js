@@ -34,7 +34,9 @@ const handler = async (req, res) => {
     console.log(data2 );
 
     console.log(data); 
-    return res.status(200).json({ exchange: {...data, ...data2}})
+
+    let exchange = {...data, ...data2}
+    return res.status(200).json(exchange)
   } catch (error) {
     console.log(error)
     return res.status(500).json({ error: error.message })
