@@ -31,8 +31,9 @@ const handler = async (req, res) => {
         method: 'GET',    
     })
     const data2 = await response2.json()    
+    console.log(data2 );
 
-
+    console.log(data); 
     return res.status(200).json({ exchange: {...data, ...data2}})
   } catch (error) {
     console.log(error)
