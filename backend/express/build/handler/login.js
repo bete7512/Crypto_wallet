@@ -7,11 +7,11 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 var _apollo = _interopRequireDefault(require("../configuration/apollo.config"));
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var dotenv = _interopRequireWildcard(require("dotenv"));
+var _bcrypt = _interopRequireDefault(require("bcrypt"));
 var _constant = require("../constant/constant");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 dotenv.config();
-var bcrypt = require('bcrypt');
 var handler = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var responce, user, isPasswordCorrect, token;
@@ -34,15 +34,18 @@ var handler = /*#__PURE__*/function () {
           }));
         case 6:
           user = responce.users[0];
-          isPasswordCorrect = bcrypt.compareSync(req.body.input.password, user.password);
+          _context.next = 9;
+          return _bcrypt["default"].compare(req.body.input.password, user.password);
+        case 9:
+          isPasswordCorrect = _context.sent;
           if (isPasswordCorrect) {
-            _context.next = 10;
+            _context.next = 12;
             break;
           }
           return _context.abrupt("return", res.status(400).json({
             message: 'Password is incorrect'
           }));
-        case 10:
+        case 12:
           token = _jsonwebtoken["default"].sign({
             'https://hasura.io/jwt/claims': {
               'x-hasura-allowed-roles': ['users', 'admins'],
@@ -53,18 +56,18 @@ var handler = /*#__PURE__*/function () {
           return _context.abrupt("return", res.status(200).json({
             access_token: token
           }));
-        case 14:
-          _context.prev = 14;
+        case 16:
+          _context.prev = 16;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
+          console.log(_context.t0.message);
           return _context.abrupt("return", res.status(400).json({
             message: 'Unexpected Error Occured'
           }));
-        case 18:
+        case 20:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 16]]);
   }));
   return function handler(_x, _x2) {
     return _ref.apply(this, arguments);
