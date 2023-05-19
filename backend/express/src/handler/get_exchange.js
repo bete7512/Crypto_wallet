@@ -61,7 +61,7 @@ const handler = async (req, res) => {
     let USDT_exchanges = data3.Data.AggregatedData   
     let XLM_exchanges = data4.Data.AggregatedData   
     let ADA_exchanges = data5.Data.AggregatedData      
-    let exchanges = [{eth:ETH_exchanges}, {btc:BTC_exchanges}, {tether:USDT_exchanges}, {xlm:XLM_exchanges}, {cardano:ADA_exchanges}    ] 
+    let exchanges = [{...ETH_exchanges}, {...BTC_exchanges}, {...USDT_exchanges}, {...XLM_exchanges}, {...ADA_exchanges}    ] 
     return res.status(200).json({ exchanges }) 
   } catch (error) {
     console.log(error)
