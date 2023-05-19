@@ -1,6 +1,24 @@
 <template>
   <div v-if="error">{{ error }}</div>
-  <div v-else-if="loading">{{ loading }}</div>
+  <div v-else-if="loading">
+    <div>
+      <div>
+        <div class="fixed inset-0 flex justify-center items-center">
+          <div class="flex items-center justify-center">
+            <div
+              class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span
+                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                >Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div v-else classs="bg-gray-100 overflow-hidden p1-10 shadow-md sm:rounded-lg">
     <div class="flex space-x-2">
       <button
@@ -25,7 +43,6 @@
       </button>
     </div>
     <div v-if="activeTab == 'transactions'">
-      <div v-if="loading">Loading</div>
       <table class="w-full divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
@@ -75,14 +92,28 @@
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-for="transaction in transactions" :key="transaction.hash" class="hover:bg-gray-100">
             <td class="px-6 py-3 whitespace-nowrap">
-              {{ truncate(transaction.node.hash) }}
+              <a
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/tx/' + transaction.node.hash"
+              >
+                {{ truncate(transaction.node.hash) }}
+              </a>
+            </td>
+            <!-- <td class="px-6 py-3 whitespace-nowrap">
+              {{ check_direction(transaction.node.fromAddress, transaction.node.toAddress)  }}
+            </td> -->
+            <td class="px-6 py-3 uppercase whitespace-nowrap">
+              
+              <span v-if="check_direction(transaction.node.fromAddress, transaction.node.toAddress) == 'Out'" class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1  bg-[#FFF6DA]">{{ check_direction(transaction.node.fromAddress, transaction.node.toAddress) }}</span>
+              <span v-else class="border border-[#42A286] rounded-md  shadow-sm text-xs  px-3   bg-[#E5F5F3] text-[#42A286]">{{ check_direction(transaction.node.fromAddress, transaction.node.toAddress) }}</span>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <span v-if="to_lower_tring(transaction.fromAddress) === to_lower_tring(user.public_key)">Out</span>
-              <span v-else>In</span>
-            </td>
-            <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/block/' + transaction.node.blockNumber">
+              <a
+                :data-tippy-content="transaction.node.blockNumber"
+                data-tippy-placement="bottom"
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/block/' + transaction.node.blockNumber"
+              >
                 {{ transaction.node.blockNumber }}
               </a>
             </td>
@@ -90,17 +121,30 @@
               {{ convertToRelativeTime(transaction.node.blockTimestamp) }}
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/address/' + transaction.node.fromAddress">
+              <a
+                :data-tippy-content="transaction.node.fromAddress"
+                data-tippy-placement="bottom"
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/address/' + transaction.node.fromAddress"
+              >
                 {{ truncate(transaction.node.fromAddress) }}
               </a>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/address/' + transaction.node.toAddress">
+              <a
+                :data-tippy-content="transaction.node.toAddress"
+                data-tippy-placement="bottom"
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/address/' + transaction.node.toAddress"
+              >
                 {{ truncate(transaction.node.toAddress) }}
               </a>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              {{ transaction.node.value }}
+              {{ 
+                transaction.node.value === '0'
+                  ? '0'
+                  : convertWeiToEther(transaction.node.value)   }}
             </td>
 
             <td class="px-6 py-3 whitespace-nowrap">
@@ -111,7 +155,21 @@
       </table>
     </div>
     <div v-if="activeTab == 'tokenTransfers'">
-      <div v-if="token_transfer_loading">Loading</div>
+      <div v-if="token_transaction_loading">
+        <div class="fixed inset-0 flex justify-center items-center">
+          <div class="flex items-center justify-center">
+            <div
+              class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span
+                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                >Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <table class="w-full divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
@@ -175,14 +233,24 @@
             class="hover:bg-gray-100"
           >
             <td class="px-6 py-3 whitespace-nowrap">
-              {{ truncate(transaction.blockHash) }}
+              <!-- {{ truncate(transaction.blockHash) }} -->
+              <a
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/tx/' + transaction.blockHash"
+              >
+                {{ truncate(transaction.blockHash) }}
+              </a>
+            </td>
+            <td class="px-6 py-3 uppercase whitespace-nowrap">
+              
+              <span v-if="check_direction(transaction.to,transaction.from) == 'Out'" class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1  bg-[#FFF6DA]">{{ check_direction(transaction.to,transaction.from) }}</span>
+              <span v-else class="border border-[#42A286] rounded-md  shadow-sm text-xs  px-3   bg-[#E5F5F3] text-[#42A286]">{{ check_direction(transaction.to,transaction.from) }}</span>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <span v-if="transaction.to === user.public_key">Out</span>
-              <span v-else>In</span>
-            </td>
-            <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/block/' + transaction.blockNumber">
+              <a
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/block/' + transaction.blockNumber"
+              >
                 {{ transaction.blockNumber }}
               </a>
             </td>
@@ -190,12 +258,18 @@
               {{ formatTimeAgo(transaction.timeStamp) }}
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/address/' + transaction.from">
+              <a
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/address/' + transaction.from"
+              >
                 {{ truncate(transaction.from) }}
               </a>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              <a :href="'https://sepolia.etherscan.io/address/' + transaction.to">
+              <a
+                class="text-[#1786D3]"
+                :href="'https://sepolia.etherscan.io/address/' + transaction.to"
+              >
                 {{ truncate(transaction.to) }}
               </a>
             </td>
@@ -207,7 +281,9 @@
             </td>
 
             <td class="px-6 py-3 whitespace-nowrap">
-              {{ transaction.value }}
+              {{
+                transaction.value.length < 5 ? transaction.value : transaction.value.substring(0, 5)
+              }}
             </td>
 
             <td class="px-6 py-3 whitespace-nowrap">{{ convertGasToEther(transaction.gas) }}</td>
@@ -226,6 +302,11 @@ import { Tegera_Address, Tegera_ABI } from '../../constants/Tegera.ABI.js'
 import { Tether_Address, Tether_ABI } from '../../constants/Tether.ABI.js'
 import apolloclient from '../../apollo.config.js'
 import { UserStore } from '../../stores/user_store.js'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+onMounted(() => {
+  tippy('[data-tippy-content]')
+})
 const user = UserStore()
 const activeTab = ref('transactions')
 const token_transfer_loading = ref(false)
@@ -247,6 +328,8 @@ const QUERY_TOKEN_TRANSACTIONS = gql`
 const { error, loading, refetch, result } = useQuery(QUERY)
 const transactions = computed(() => result.value?.get_transaction?.transactions || [])
 const token_transactions = ref([])
+
+const token_transaction_loading = ref(true) // loading.value
 function convertWeiToEther(weiValue) {
   const web3 = new Web3()
   const etherValue = web3.utils.fromWei(String(weiValue), 'ether')
@@ -297,9 +380,10 @@ function formatTimeAgo(timestamp) {
   // if (months > 0) {
   //   timeAgo.push(`${months} month${months > 1 ? 's' : ''}`);
   // }
-  // if (weeks > 0) {
-  //   timeAgo.push(`${weeks} wk${weeks > 1 ? 's' : ''}`);
-  // }
+  if (weeks > 0) {
+    timeAgo.push(`${weeks} wk${weeks > 1 ? 's' : ''}`)
+    return timeAgo.join(' ') + ' ago' 
+  }
   if (days > 0) {
     timeAgo.push(`${days} day${days > 1 ? 's' : ''}`)
     return timeAgo.join(' ') + ' ago'
@@ -319,8 +403,10 @@ function formatTimeAgo(timestamp) {
 }
 watchEffect(async () => {
   if (activeTab.value == 'tokenTransfers') {
+    token_transaction_loading.value = true
     await fetchTokenTransactions()
     console.log(token_transactions.value)
+    token_transaction_loading.value = false
   }
 })
 
@@ -361,7 +447,17 @@ onMounted(async () => {
 function to_lower_tring(value) {
   let str = value || ''
   str = str.toLowerCase()
+  console.log('am the insider', str)
   return str
+}
+
+function check_direction(from,to){
+  if(from.toLowerCase() == user.public_key.toLowerCase()){
+    return 'Out'
+  }
+  else{
+    return 'In'
+  }
 }
 </script>
 <style></style>
