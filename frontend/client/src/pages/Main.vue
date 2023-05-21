@@ -1,175 +1,164 @@
 <template>
   <div v-if="error">{{ error }}</div>
-  <div v-else-if="loading">{{ loading }}</div>
+  <div v-else-if="loading">
+    <div>
+      <div>
+        <div class="fixed inset-0 flex justify-center items-center">
+          <div class="flex items-center justify-center">
+            <div
+              class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status"
+            >
+              <span
+                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                >Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div v-else classs="bg-gray-100 overflow-hidden p1-10 shadow-md sm:rounded-lg">
+    {{ exchanges }}
     <table class="w-full divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Transaction Hash
+            Name
           </th>
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Method
+            Price
           </th>
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Block
+            Price Change
           </th>
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            Age
+            Market Cap
           </th>
 
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            From
+            Balance
           </th>
           <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
-            To
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Value
-          </th>
-          <th
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            Tx Fee
+            Actions
           </th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr v-for="transaction in transactions" :key="transaction.hash" class="hover:bg-gray-100">
+        <tr v-for="exchange in exchanges" class="hover:bg-gray-100">
           <td class="px-6 py-3 whitespace-nowrap">
-            {{ truncate(transaction.node.hash) }}
+            <!-- <font-awesome-icon :icon="['fab', 'bitcoin']" style="color: #e38e16;" /> -->
+            {{ exchange.FROMSYMBOL }}
           </td>
+          <td class="px-6 py-3 font-bold whitespace-nowrap">US${{ exchange.PRICE }}</td>
           <td class="px-6 py-3 whitespace-nowrap">
-            {{ transaction.node.type }}
-          </td>
-          <td class="px-6 py-3 whitespace-nowrap">
-            {{ transaction.node.blockNumber }}
-          </td>
-          <td class="px-6 py-3 whitespace-nowrap">
-            {{ convertToRelativeTime(transaction.node.blockTimestamp) }}
-          </td>
-          <td class="px-6  py-3 whitespace-nowrap">
-            <a :href="'https://sepolia.etherscan.io/address/'+ transaction.node.fromAddress">
-                {{ truncate(transaction.node.fromAddress) }}
-            </a>
+            {{ exchange.CHANGEPCT24HOUR }}
           </td>
           <td class="px-6 py-3 whitespace-nowrap">
-            <a :href="'https://sepolia.etherscan.io/address/'+transaction.node.toAddress">
-            {{ truncate(transaction.node.toAddress) }}
-            </a>
+            {{ exchange.MKTCAP }}
           </td>
+          <td class="px-6 py-3 whitespace-nowrap">0</td>
+          <td class="px-6 py-3 whitespace-nowrap">
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="send"
+            >
+              Send
+            </button>
 
-          <td class="px-6 py-3 whitespace-nowrap">
-            {{ convertWeiToEther(transaction.node.value) }}
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="send"
+            >
+              Withdraw
+            </button>
           </td>
-
-          <td class="px-6 py-3 whitespace-nowrap">{{ convertGasToEther(transaction.node.gas) }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive, watchEffect } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import Web3 from 'web3';
-import { Tegera_Address,Tegera_ABI } from '../constants/Tegera.ABI.js'; 
-import { Tether_Address,Tether_ABI } from '../constants/Tether.ABI.js';
+import Web3 from 'web3'
+import { Tegera_Address, Tegera_ABI } from '../constants/Tegera.ABI.js'
+import { Tether_Address, Tether_ABI } from '../constants/Tether.ABI.js'
 import apolloclient from '../apollo.config.js'
 const QUERY = gql`
   query MyQuery {
-    get_transaction {
-      transactions
+    get_exchange {
+      exchanges
     }
   }
 `
-const QUERY_TOKEN_TRANSACTIONS = gql`
-  query MyQuery($token_type: String = "") {
-  token_transaction(token_type: $token_type) {
-    transaction
-  }
-}
-`
 
 const { error, loading, refetch, result } = useQuery(QUERY)
-const transactions = computed(() => result.value?.get_transaction?.transactions || [])
+const exchanges = computed(() => result.value?.get_exchange?.exchanges || [])
 
-function convertWeiToEther(weiValue) {
-  const web3 = new Web3();
-  const etherValue = web3.utils.fromWei(String(weiValue), 'ether');
-  return etherValue;
-}
-const truncate = (address) => {
-  return `${address.slice(0, 6)}...${address.slice(-6)}`
-}
-function convertToRelativeTime(timestamp) {
-  const currentTimestamp = Date.now();
-  const targetTimestamp = Date.parse(timestamp);
-  const elapsedMilliseconds = currentTimestamp - targetTimestamp;
+const conin_detail = reactive([
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    icon: 'ethereum',
+    id: ''
+  },
+  {
+    name: 'Bitcoin',
+    symbol: 'BTC',
+    icon: 'bitcoin',
+    id : ''
+  },
+  {
+    name: 'Tether',
+    symbol: 'USDT',
+    icon: '',
+    id: ''
+  },
+  {
+    name: 'Stellar',
+    symbol: 'XLM',
+    icon: '',
+    id: ''
 
-  const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
-  const elapsedMinutes = Math.floor(elapsedSeconds / 60);
-  const elapsedHours = Math.floor(elapsedMinutes / 60);
-
-  if (elapsedHours >= 24) {
-    const daysAgo = Math.floor(elapsedHours / 24);
-    return `${daysAgo} day${daysAgo > 1 ? 's' : ''} ago`;
-  } else if (elapsedHours >= 1) {
-    return `${elapsedHours} hr ${elapsedMinutes % 60} min ago`;
-  } else if (elapsedMinutes >= 1) {
-    return `${elapsedMinutes} min ago`;
-  } else {
-    return 'Just now';
+  },
+  {
+    name: 'Cardano',
+    symbol: 'ADA',
+    icon: '',
+    id: ''
   }
-}
+])
 
-function convertGasToEther(gasValue) {
-  const web3 = new Web3();
-  const gas = web3.utils.toBN(gasValue);
-  const weiValue = gas.mul(web3.utils.toBN(web3.utils.toWei('1', 'gwei')));
-  const etherValue = web3.utils.fromWei(weiValue, 'ether');
-  return etherValue;
-}
+watchEffect(
+  () => {
+    if (exchanges.value.length > 0) {
+      exchanges.value.forEach((exchange) => {
+        conin_detail.forEach((coin) => {
+          if (exchange.FROMSYMBOL === coin.symbol) {
+            coin.name = exchange.FROMSYMBOL
+            coin.icon = exchange.IMAGEURL
+          }
+        })
+      })
+    }
+  },
+  { immediate: true }
+)
 
-
-onMounted(async () => {
-  
-  
-})
-// const web3 = new Web3(window.ethereum)
-// const contract = new web3.eth.Contract(Tether_ABI, Tether_Address)
-// const totalSupply = await contract.methods.totalSupply().call()   
-// console.log(totalSupply) 
-// const contract = new web3.eth.Contract(Tegera_ABI, Tegera_Address)      
-// const totalSupply = await contract.methods.totalSupply().call()       
-// console.log(totalSupply)      
-//write a code to return the transaxtion made by the GIVEN address from these two contracts  
-// let address = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2'  
-// //give the ALL TYPES OF TRANSACTION MADE BY THE GIVEN ADDRESS  FOR THE GIVEN CONTRACT ADDRESS      
-// const transactions = await contract.getPastEvents('Transfer', {
-//   filter: {from: address, to: address},
-//   fromBlock: 0,
-// })
-// console.log(transactions);        
-// const transactions = await contract.getPastEvents('Transfer', {
-//   fromBlock: 0,
-//   toBlock: 'latest',
-// })
-// console.log(transactions)  
 </script>
 <style></style>

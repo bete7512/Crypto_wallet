@@ -19,7 +19,6 @@
       </div>
     </div>
   </div>
-
   <div v-else>
     <table class="w-full divide-gray-200">
       <thead class="bg-gray-50">
@@ -64,10 +63,15 @@
           >
             Total Supply
           </th>
-          <th
+          <!-- <th
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Created at
+          </th> -->
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Actions
           </th>
         </tr>
       </thead>
@@ -81,9 +85,9 @@
             <!-- {{ balance[token.name] }} {{ token.symbol }} -->
 
             {{
-              balance[token.name].length < 5
+              balance[token.name]?.length < 5
                 ? balance[token.name]
-                : balance[token.name].substring(0, 5)
+                : balance[token.name]?.substring(0, 5)
             }}
             {{ token.symbol }}
           </td>
@@ -92,9 +96,30 @@
           <td class="px-6 py-4 whitespace-nowrap">
             <a :href="token?.url_address">link</a>
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ token.total_supply.substring(0,5) }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
+          <td class="px-6 py-4 whitespace-nowrap">{{ token.total_supply.substring(0, 5) }}</td>
+          <!-- <td class="px-6 py-4 whitespace-nowrap">
             {{ token.created_at.split('T')[0] }}
+          </td> -->
+          <td class="flex space-x-2 py-4 whitespace-nowrap">
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="send"
+            >
+              Send
+            </button>
+
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="send"
+            >
+              Withdraw
+            </button>
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              @click="send"
+            >
+              Buy
+            </button>
           </td>
         </tr>
       </tbody>
@@ -146,6 +171,7 @@ const getBalance = async () => {
   balance['Tether'] = await tether.methods.balanceOf(user.public_key).call()
   balance['ጠገራ'] = await tegera.methods.balanceOf(user.public_key).call()
   balance['Ether'] = await web3.eth.getBalance(user.public_key)
+  await convertWeiToEther(balance['Ether'])
   console.log(balance)
 }
 
