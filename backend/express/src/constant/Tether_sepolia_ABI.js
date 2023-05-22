@@ -126,6 +126,6 @@ const Tether_ABI = [
     type: 'function',
   },
 ]
-
+const Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'          
 
 export {Tether_ABI}

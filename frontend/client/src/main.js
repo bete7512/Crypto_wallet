@@ -6,7 +6,6 @@ import apolloclient from './apollo.config'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import './index.css'
 import { VueClipboard } from '@soerenmartius/vue3-clipboard'
-
 import piniaPersist from 'pinia-plugin-persist'
 import Main from './components/layouts/Main.vue'
 import Empty from './components/layouts/Empty.vue'
@@ -18,6 +17,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import Notifications from '@kyvg/vue3-notification'
 import velocity from 'velocity-animate'
+import { TroisJSVuePlugin } from 'troisjs';
 library.add(fas, far, fab)
 dom.watch();
 const pinia = createPinia()
@@ -36,4 +36,6 @@ app.use(router)
 app.use(VueClipboard)
 app.use(Notifications, { velocity })
 app.component('font-awesome-icon', FontAwesomeIcon)
+// app.use(vue3dLoader)
+app.use(TroisJSVuePlugin);
 app.mount('#app');

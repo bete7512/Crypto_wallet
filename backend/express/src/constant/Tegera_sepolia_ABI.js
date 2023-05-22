@@ -130,5 +130,5 @@ const Tegera_ABI = [
     type: 'function',
   },
 ]
-
-export { Tegera_ABI }
+const Tegera_Address = '0x09871Adb124aab581046EA38c26C6af2e88F280E'
+export { Tegera_ABI,Tegera_Address }

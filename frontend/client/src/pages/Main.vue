@@ -1,6 +1,4 @@
 <template>
-
-  <div ref="canvas"></div>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="loading">
     <div>
@@ -62,54 +60,44 @@
         <tr v-for="exchange in exchanges" class="hover:bg-gray-100">
           <td class="px-6 py-3 whitespace-nowrap">
             <div v-if="exchange.FROMSYMBOL === 'BTC'" class="flex space-x-1 items-center">
-              <BTC  class="text-4xl"/>
+              <BTC class="text-4xl" />
               <div>{{ coin_detail[exchange.FROMSYMBOL] }}</div>
               <div>({{ exchange.FROMSYMBOL }})</div>
             </div>
             <div v-else-if="exchange.FROMSYMBOL === 'ETH'" class="flex space-x-1 items-center">
-              <ETH  class="text-4xl"/>
+              <ETH class="text-4xl" />
               <div>{{ coin_detail[exchange.FROMSYMBOL] }}</div>
               <div>({{ exchange.FROMSYMBOL }})</div>
             </div>
             <div v-else-if="exchange.FROMSYMBOL === 'ADA'" class="flex space-x-1 items-center">
-              <ADA  class="text-4xl"/>
+              <ADA class="text-4xl" />
               <div>{{ coin_detail[exchange.FROMSYMBOL] }}</div>
               <div>({{ exchange.FROMSYMBOL }})</div>
             </div>
             <div v-else-if="exchange.FROMSYMBOL === 'USDT'" class="flex space-x-1 items-center">
-              <USDT  class="text-4xl"/>
+              <USDT class="text-4xl" />
               <div>{{ coin_detail[exchange.FROMSYMBOL] }}</div>
               <div>({{ exchange.FROMSYMBOL }})</div>
             </div>
             <div v-else-if="exchange.FROMSYMBOL === 'XLM'" class="flex space-x-1 items-center">
-              <XLM  class="text-4xl"/>
+              <XLM class="text-4xl" />
               <div>{{ coin_detail[exchange.FROMSYMBOL] }}</div>
               <div>({{ exchange.FROMSYMBOL }})</div>
             </div>
-
           </td>
           <td class="px-6 py-3 font-bold whitespace-nowrap">US${{ exchange.PRICE }}</td>
-          <td :class="[round(exchange.CHANGEPCT24HOUR) >= 0 ? 'text-[#18B5B4]' : 'text-[#CF1726]']" class="px-6 py-3 whitespace-nowrap">
-           {{ round(exchange.CHANGEPCT24HOUR)    }}% 
+          <td
+            :class="[round(exchange.CHANGEPCT24HOUR) >= 0 ? 'text-[#18B5B4]' : 'text-[#CF1726]']"
+            class="px-6 py-3 whitespace-nowrap"
+          >
+            {{ round(exchange.CHANGEPCT24HOUR) }}%
           </td>
+          <td class="px-6 py-3 whitespace-nowrap">$ {{ exchange.MKTCAP }}</td>
+          <td class="px-6 py-3 whitespace-nowrap">0.0000 {{ exchange.FROMSYMBOL }}</td>
           <td class="px-6 py-3 whitespace-nowrap">
-           $ {{ exchange.MKTCAP }}
-          </td>
-          <td class="px-6 py-3 whitespace-nowrap">0.0000 {{ exchange.FROMSYMBOL  }}</td>
-          <td class="px-6  py-3 whitespace-nowrap">
-            <button
-              class=" text-white font-semibold py-2 px-4 rounded"
-              @click="send"
-            >
-              Send
-            </button>
+            <button class="text-white font-semibold py-2 px-4 rounded" @click="send">Send</button>
 
-            <button
-              class=" text-white font-bold py-2 px-4 rounded"
-              @click="send"
-            >
-              Withdraw
-            </button>
+            <button class="text-white font-bold py-2 px-4 rounded" @click="send">Withdraw</button>
           </td>
         </tr>
       </tbody>
@@ -129,34 +117,8 @@ import BTC from './icons/BTC.vue'
 import ETH from './icons/ETH.vue'
 import XLM from './icons/XLM.vue'
 import USDT from './icons/USDT.vue'
-// import * as THREE from 'three';
-// import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
-// const canvas = ref('canvas');
-// const renderer = new THREE.WebGLRenderer({ canvas });
 
-// const scene = new THREE.Scene();
-// const camera = new THREE.PerspectiveCamera(
-//   75,
-//   canvas.value.clientWidth / canvas.value.clientHeight,
-//   0.1,
-//   1000
-// );
-// camera.position.z = 5;
-
-// const loader = new OBJLoader();
-// loader.load('../assets/Ethereum', (obj) => {
-//   scene.add(obj);
-// });
-
-// function animate() {
-//   requestAnimationFrame(animate);
-//   renderer.render(scene, camera);
-// }
-
-// onMounted(() => {
-//   animate();
-// }); 
 const QUERY = gql`
   query MyQuery {
     get_exchange {
@@ -173,15 +135,13 @@ const coin_detail = reactive({
   XLM: 'Stellar',
   ADA: 'Cardano'
 })
-const round = (number)=>{
+const round = (number) => {
   return Math.round((number + Number.EPSILON) * 100) / 100
 }
 </script>
 <style>
-
 canvas {
   width: 100%;
   height: 100%;
 }
-
 </style>
