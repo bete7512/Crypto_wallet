@@ -5,11 +5,11 @@
     >
       <div class="flex container mx-auto justify-center items-center z-50">
         <div class="space-y-8">
-          <h1 class="text-white text-5xl font-bold z-0">Be early to the future of finance</h1>
+          <h1 class="text-white text-5xl font-bold z-0">Fast Remittance Transfer</h1>
           <div class="text-white text-xl font-bold z-0">
-            <div class="text-white text-xl font-bold z-0">Buy Crypto Tokens from Ethereum,</div>
+            <div class="text-white text-xl font-bold z-0">Send Money accros a globe</div>
             <div class="text-white text-xl font-bold z-0">
-              and other leading cryptocurrencies on Santim Platform.
+               through cryptocurrencies on Santim Platform.
             </div>
           </div>
           <div class="">
