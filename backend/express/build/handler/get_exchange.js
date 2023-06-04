@@ -2,16 +2,11 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-<<<<<<< HEAD
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-var _web = require("../web3/web3.js");
-=======
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _web = require("../web3/web3.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
->>>>>>> 6e2fc9c3abb69ab2f453c503352354497f0c48b1
 var handler = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var response, data, response2, data2, data3, data4, data5, ETH_exchanges, BTC_exchanges, USDT_exchanges, XLM_exchanges, ADA_exchanges, exchanges;
@@ -99,21 +94,7 @@ var handler = /*#__PURE__*/function () {
           USDT_exchanges = data3.Data.AggregatedData;
           XLM_exchanges = data4.Data.AggregatedData;
           ADA_exchanges = data5.Data.AggregatedData;
-<<<<<<< HEAD
-          exchanges = [{
-            eth: ETH_exchanges
-          }, {
-            btc: BTC_exchanges
-          }, {
-            tether: USDT_exchanges
-          }, {
-            xlm: XLM_exchanges
-          }, {
-            cardano: ADA_exchanges
-          }];
-=======
           exchanges = [_objectSpread({}, ETH_exchanges), _objectSpread({}, BTC_exchanges), _objectSpread({}, USDT_exchanges), _objectSpread({}, XLM_exchanges), _objectSpread({}, ADA_exchanges)];
->>>>>>> 6e2fc9c3abb69ab2f453c503352354497f0c48b1
           return _context.abrupt("return", res.status(200).json({
             exchanges: exchanges
           }));

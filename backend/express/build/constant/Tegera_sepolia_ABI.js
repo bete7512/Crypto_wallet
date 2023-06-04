@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Tegera_ABI = void 0;
+exports.Tegera_Address = exports.Tegera_ABI = void 0;
 var Tegera_ABI = [{
   inputs: [{
     internalType: 'string',
@@ -196,3 +196,5 @@ var Tegera_ABI = [{
   type: 'function'
 }];
 exports.Tegera_ABI = Tegera_ABI;
+var Tegera_Address = '0x09871Adb124aab581046EA38c26C6af2e88F280E';
+exports.Tegera_Address = Tegera_Address;

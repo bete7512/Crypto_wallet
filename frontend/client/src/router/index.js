@@ -5,6 +5,7 @@ import Signup from '../pages/Signup.vue'
 import Main from '../pages/Main.vue'
 import Transaction from '../pages/main/Transaction.vue'
 import Asset from '../pages/main/Asset.vue'
+import Profile from '../pages/Profile.vue'      
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -55,6 +56,14 @@ const router = createRouter({
       component: Asset,
       meta: {
         layout: 'authed'
+      }
+    },
+    {
+      path:'/profile', 
+      name: 'Profile',     
+      component: Profile,      
+      meta: {   
+        layout: 'authed'      
       }
     }
   ]

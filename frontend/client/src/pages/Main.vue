@@ -1,4 +1,20 @@
 <template>
+  <div class="sm:mx-4 mx-2">
+    <carousel :items-to-show="1.5" >
+      <slide v-for="slide in slides" :key="slide">
+        <div class="carousel__item">
+          <img :src="slide.image" class="w-full h-96" alt="" />
+        </div>
+      </slide>
+
+      <template #addons>
+        <navigation />
+        <pagination />
+      </template>
+    </carousel>
+  </div>
+
+  <!-- <div><img src="remittance.jpg" alt=""></div> -->
   <div v-if="error">{{ error }}</div>
   <div v-else-if="loading">
     <div>
@@ -117,7 +133,30 @@ import BTC from './icons/BTC.vue'
 import ETH from './icons/ETH.vue'
 import XLM from './icons/XLM.vue'
 import USDT from './icons/USDT.vue'
+import { nextTick } from 'vue'
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+const slides = ref([
+  {
+    image: 'remittance.jpg',
+    caption: 'Fast and secure remittance'
+  },
+  {
+    image: 'crypto.jpg',
+    caption: 'Caption 2'
+  }
+  // Add more slides as needed
+])
 
+const activeIndex = ref(0)
+
+function nextSlide() {
+  activeIndex.value = (activeIndex.value + 1) % slides.value.length
+}
+
+function previousSlide() {
+  activeIndex.value = (activeIndex.value - 1 + slides.value.length) % slides.value.length
+}
 
 const QUERY = gql`
   query MyQuery {
@@ -138,10 +177,43 @@ const coin_detail = reactive({
 const round = (number) => {
   return Math.round((number + Number.EPSILON) * 100) / 100
 }
+
+const settings = ref({
+  itemsToShow: 1,
+  snapAlign: 'center'
+})
+const breakpoints = ref({
+  700: {
+    itemsToShow: 3.5,
+    snapAlign: 'center'
+  },
+  // 1024 and up
+  1024: {
+    itemsToShow: 5,
+    snapAlign: 'start'
+  }
+})
 </script>
 <style>
-canvas {
+.carousel__item {
+  min-height: 200px;
   width: 100%;
-  height: 100%;
+  background-color: var(--vc-clr-primary);
+  color: var(--vc-clr-white);
+  font-size: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel__slide {
+  padding: 10px;
+}
+
+.carousel__prev,
+.carousel__next {
+  box-sizing: content-box;
+  border: 5px solid white;
 }
 </style>
