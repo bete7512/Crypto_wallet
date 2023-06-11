@@ -98,14 +98,33 @@
               >
                 {{ truncate(transaction.node.hash) }}
               </a>
+              <button @click="copy(transaction.node.hash)">
+                <span v-if="!copied">
+                  <font-awesome-icon :icon="['fas', 'copy']" />
+                </span>
+                <span v-else>Copied!</span>
+              </button>
             </td>
             <!-- <td class="px-6 py-3 whitespace-nowrap">
               {{ check_direction(transaction.node.fromAddress, transaction.node.toAddress)  }}
             </td> -->
             <td class="px-6 py-3 uppercase whitespace-nowrap">
-              
-              <span v-if="check_direction(transaction.node.fromAddress, transaction.node.toAddress) == 'Out'" class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1  bg-[#FFF6DA]">{{ check_direction(transaction.node.fromAddress, transaction.node.toAddress) }}</span>
-              <span v-else class="border border-[#42A286] rounded-md  shadow-sm text-xs  px-3   bg-[#E5F5F3] text-[#42A286]">{{ check_direction(transaction.node.fromAddress, transaction.node.toAddress) }}</span>
+              <span
+                v-if="
+                  check_direction(transaction.node.fromAddress, transaction.node.toAddress) == 'Out'
+                "
+                class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1 bg-[#FFF6DA]"
+                >{{
+                  check_direction(transaction.node.fromAddress, transaction.node.toAddress)
+                }}</span
+              >
+              <span
+                v-else
+                class="border border-[#42A286] rounded-md shadow-sm text-xs px-3 bg-[#E5F5F3] text-[#42A286]"
+                >{{
+                  check_direction(transaction.node.fromAddress, transaction.node.toAddress)
+                }}</span
+              >
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
               <a
@@ -141,10 +160,7 @@
               </a>
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
-              {{ 
-                transaction.node.value === '0'
-                  ? '0'
-                  : convertWeiToEther(transaction.node.value)   }}
+              {{ transaction.node.value === '0' ? '0' : convertWeiToEther(transaction.node.value) }}
             </td>
 
             <td class="px-6 py-3 whitespace-nowrap">
@@ -242,9 +258,16 @@
               </a>
             </td>
             <td class="px-6 py-3 uppercase whitespace-nowrap">
-              
-              <span v-if="check_direction(transaction.to,transaction.from) == 'Out'" class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1  bg-[#FFF6DA]">{{ check_direction(transaction.to,transaction.from) }}</span>
-              <span v-else class="border border-[#42A286] rounded-md  shadow-sm text-xs  px-3   bg-[#E5F5F3] text-[#42A286]">{{ check_direction(transaction.to,transaction.from) }}</span>
+              <span
+                v-if="check_direction(transaction.to, transaction.from) == 'Out'"
+                class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1 bg-[#FFF6DA]"
+                >{{ check_direction(transaction.to, transaction.from) }}</span
+              >
+              <span
+                v-else
+                class="border border-[#42A286] rounded-md shadow-sm text-xs px-3 bg-[#E5F5F3] text-[#42A286]"
+                >{{ check_direction(transaction.to, transaction.from) }}</span
+              >
             </td>
             <td class="px-6 py-3 whitespace-nowrap">
               <a
@@ -304,6 +327,11 @@ import apolloclient from '../../apollo.config.js'
 import { UserStore } from '../../stores/user_store.js'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
+import { useClipboard } from '@vueuse/core'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+
+const source = ref('')
+const { text, copy, copied, isSupported } = useClipboard({ source })
 onMounted(() => {
   tippy('[data-tippy-content]')
 })
@@ -332,7 +360,7 @@ const token_transactions = ref([])
 const token_transaction_loading = ref(true) // loading.value
 function convertWeiToEther(weiValue) {
   const web3 = new Web3()
-  const etherValue = web3.utils.fromWei(String(weiValue), 'ether')
+  const etherValue = web3.utils.fromWei(String(weiValue), 'gwei')
   if (etherValue.length > 5) {
     return etherValue.slice(0, 5)
   }
@@ -382,7 +410,7 @@ function formatTimeAgo(timestamp) {
   // }
   if (weeks > 0) {
     timeAgo.push(`${weeks} wk${weeks > 1 ? 's' : ''}`)
-    return timeAgo.join(' ') + ' ago' 
+    return timeAgo.join(' ') + ' ago'
   }
   if (days > 0) {
     timeAgo.push(`${days} day${days > 1 ? 's' : ''}`)
@@ -451,11 +479,10 @@ function to_lower_tring(value) {
   return str
 }
 
-function check_direction(from,to){
-  if(from.toLowerCase() == user.public_key.toLowerCase()){
+function check_direction(from, to) {
+  if (from.toLowerCase() == user.public_key.toLowerCase()) {
     return 'Out'
-  }
-  else{
+  } else {
     return 'In'
   }
 }

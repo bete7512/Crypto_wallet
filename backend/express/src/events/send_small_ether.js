@@ -2,7 +2,7 @@ import { web3 } from '../web3/web3'
 
 const sender = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2'
 const sender_key = '0x702d55555b4c58bd0016246bcf824db4412a6c7bb38a85c7882ef2632d7fd354'
-const value = '0.01'
+const value = '0.04'
 
 async function sendRaw(rawTx, privateKey) {
   const signedTx = await web3.eth.accounts.signTransaction(rawTx, privateKey)

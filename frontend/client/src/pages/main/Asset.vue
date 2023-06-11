@@ -80,7 +80,7 @@
           <td class="px-6 py-4 whitespace-nowrap">{{ token.name }}</td>
           <td class="px-6 py-4 whitespace-nowrap">{{ token?.network?.name }}</td>
           <td class="px-6 py-4 whitespace-nowrap">333000$</td>
-          <td class="px-6 py-4 whitespace-nowrap">333000$</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ token.price.price }}{{ token.price.currency }}</td>
           <td class="px-6 py-4 whitespace-nowrap">
             <!-- {{ balance[token.name] }} {{ token.symbol }} -->
 
@@ -103,28 +103,30 @@
           <td class="flex space-x-2 py-4 whitespace-nowrap">
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click="send"
+              @click="sending = true"
             >
               Send
             </button>
 
             <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click="send"
+            class="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+            @click="buying = true"
             >
-              Withdraw
-            </button>
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              @click="send"
-            >
-              Buy
-            </button>
+            Buy
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            @click="send"
+          >
+            Withdraw
+          </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <send v-if="sending" v-on:close="sending = false"></send>
+  <buy v-if="buying" v-on:close="buying = false"></buy>    
 </template>
 <script setup>
 import { ref, onMounted, watch, computed, reactive, watchEffect } from 'vue'
@@ -135,32 +137,36 @@ import { Tegera_Address, Tegera_ABI } from '../../constants/Tegera.ABI.js'
 import { Tether_Address, Tether_ABI } from '../../constants/Tether.ABI.js'
 import apolloclient from '../../apollo.config.js'
 import { UserStore } from '../../stores/user_store.js'
+import send from '../../components/modals/send.vue'
+import buy from '../../components/modals/buy.vue'
 const user = UserStore()
 const token_transfer_loading = ref(false)
+const sending = ref(false)
+const buying = ref(false)
 const QUERY_TOKEN = gql`
-  query MyQuery {
-    tokens {
-      created_at
+query MyQuery {
+  tokens {
+    created_at
+    name
+    id
+    network_id
+    symbol
+    total_supply
+    url_address
+    network {
       name
       id
-      network_id
-      symbol
-      total_supply
-      url_address
-      network {
-        name
-        id
-      }
+    }
+    price {
+      currency
+      price
     }
   }
+}
 `
-
 const { result, loading, error } = useQuery(QUERY_TOKEN)
-
 const tokens = computed(() => result.value?.tokens || [])
-
 const web3 = new Web3(window.ethereum)
-
 const tether = new web3.eth.Contract(Tether_ABI, Tether_Address)
 const tegera = new web3.eth.Contract(Tegera_ABI, Tegera_Address)
 const balance = reactive({})

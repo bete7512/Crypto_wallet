@@ -32,12 +32,12 @@
             <div class="flex h-full justify-center items-center space-x-1">
             <button
               @click="sending = true"
-              class="flex h-10 px-6 justify-center rounded-lg items-center bg-white text-black border border-gray-700 hover:bg-slate-200 hover:border-blue-700 hover:text-blue-700 space-x-2"
+              class="flex h-10 z-0 px-6 justify-center rounded-lg items-center bg-white text-black border border-gray-700 hover:bg-slate-200 hover:border-blue-700 hover:text-blue-700 space-x-2"
             >
               Send
             </button>
           </div>
-          <div class="flex h-full justify-center items-center space-x-1">
+          <div class="flex z-0 h-full justify-center items-center space-x-1">
             <button
               @click="recieving = true"
               class="flex h-10 justify-center items-center border border-gray-700 hover:bg-slate-200 hover:border-blue-700 hover:text-blue-700 bg-white text-black rounded-lg px-3 space-x-2"
@@ -71,7 +71,6 @@ const show_notification = ref(false)
 const user = UserStore()
 const isNav = ref(false)
 onMounted(async () => {
-  if (user.userLoggedin) await router.push('/home')
   if (user.userLoggedin) await user.user_profile()
   console.log(user.user)
 })

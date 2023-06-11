@@ -26,6 +26,8 @@
 import { ref } from 'vue'
 import Web3 from 'web3'
 import {Tether_ABI} from '../constants/Tether.ABI'
+import apolloclient from '../apollo.config';
+import gql  from 'graphql-tag' 
 const contract_address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
 const amount = ref('')
 const recipient = ref('')
@@ -56,9 +58,17 @@ const recipient = ref('')
 //     console.error(error)
 //   }
 // }
+const Mutate = gql`
+mutation MyMutation($amount: Int = 10, $to: String = "", $token_type: String = "") {
+  send_token(amount: $amount, token_type: $token_type, to: $to) {
+    success
+  }
+}
 
+`
 const send_token = async () => {
   try {
+
     if (typeof window.ethereum === 'undefined') {
       throw new Error('Please install MetaMask to use this feature')
     }
@@ -78,6 +88,22 @@ const send_token = async () => {
   }
 }
 
+
+const send_from_my_token = async ()=>{
+  try {
+    const {data} = await apolloclient.mutate({
+      mutation: Mutate,
+      variables: {
+        amount: 10,
+        to: "0x222fB5507acD3Da78351Be60271fa9537b07Cdc3",
+        token_type: "Tether"
+      }
+    })
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <style>

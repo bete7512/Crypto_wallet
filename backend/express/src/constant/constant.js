@@ -28,7 +28,7 @@ const registerQuery = gql`
 
 const loginQuery = gql`
 query MyQuery($email: String = "") {
-  users(where: {email: {_eq: $email}}) {
+  users(where: {email: {_eq: $email}}, limit: 1) {
     first_name
     last_name
     email
@@ -38,6 +38,8 @@ query MyQuery($email: String = "") {
     role {
       name
     }
+    status
+    two_step
   }
 }
 `

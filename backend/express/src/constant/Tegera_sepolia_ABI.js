@@ -1,11 +1,7 @@
 const Tegera_ABI = [
   {
     inputs: [
-      {
-        internalType: 'string',
-        name: '_name',
-        type: 'string',
-      },
+      { internalType: 'string', name: '_name', type: 'string' },
       { internalType: 'string', name: '_symbol', type: 'string' },
       { internalType: 'uint256', name: '_decimals', type: 'uint256' },
       { internalType: 'uint256', name: '_totalSupply', type: 'uint256' },
@@ -131,4 +127,4 @@ const Tegera_ABI = [
   },
 ]
 const Tegera_Address = '0x09871Adb124aab581046EA38c26C6af2e88F280E'
-export { Tegera_ABI,Tegera_Address }
+export { Tegera_ABI, Tegera_Address }
