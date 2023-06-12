@@ -1,5 +1,5 @@
 import { web3 } from '../web3/web3.js'
-import { User } from '../utils/user.js'
+import { User,transactionCounter } from '../utils/user.js'
 import { Token } from '../utils/token.js'
 import jwtDecode from 'jwt-decode'
 import { Tegera_ABI, Tegera_Address } from '../constant/Tegera_sepolia_ABI.js'
@@ -16,6 +16,7 @@ const handler = async (req, res) => {
     const content = jwtDecode(token)
     const userId = content['https://hasura.io/jwt/claims']['x-hasura-user-id']
     const user = await User({ id: userId })
+    const total_transaction = user.total_transaction ? user.total_transaction : 0     
     const senderPublicKey = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2'
     let response_url
     // user.wallets[0].public_key;
@@ -47,7 +48,9 @@ const handler = async (req, res) => {
       tokenABI = Tether_ABI
       tokenAddress = Tether_Address
     } else if (crypto.name === 'Ether') {
+
       await send_small_ether(to, amount, senderPublicKey, senderPrivateKey)
+      await transactionCounter({ total_transaction: total_transaction + 1, id: userId })      
     } else {
       return res.status(400).json({ error: 'Invalid token type' })
     }
@@ -79,6 +82,7 @@ const handler = async (req, res) => {
     const receipt = await web3.eth.sendSignedTransaction(
       signedTransaction.rawTransaction,
     )
+    await transactionCounter({ total_transaction: total_transaction + 1, id: userId })      
     const transactionHash = receipt.transactionHash
     let myChapa = new Chapa('CHASECK_TEST-R2r7oy9nnhaZuJLpM47VxYVHZXadMkS6')
     const customerInfo = {

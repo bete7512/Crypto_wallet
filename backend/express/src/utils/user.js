@@ -5,6 +5,7 @@ query MyQuery($id: Int!) {
     id
     email
     first_name
+    total_transaction
     last_name
     wallets {
       id
@@ -37,6 +38,13 @@ const User = async (variables) => {
   return data['users_by_pk']
 }
 
+const COUNTER = `
+mutation MyMutation($total_transaction: Int!, $id: Int!) {
+  update_users_by_pk(pk_columns: {id: $id}, _set: {total_transaction: $total_transaction}) {
+    total_transaction
+  }
+}
+`
 const UpdateWallet = async (variables) => {
  try {
    const data = await client.request(UPDATE_WALLET, variables)
@@ -47,5 +55,14 @@ const UpdateWallet = async (variables) => {
  }      
 }
 
+const transactionCounter = async (variables) => {
+  try {    
+    const data = await client.request(COUNTER, variables)            
+    return data['update_users_by_pk']         
+  }
+  catch(error){
+    console.log(error.message);
+  }         
+}
 
-export { User,UpdateWallet }
+export { User,UpdateWallet,transactionCounter }
