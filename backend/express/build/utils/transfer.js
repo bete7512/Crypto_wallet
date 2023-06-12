@@ -17,8 +17,6 @@ var tokenAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'; // Demo Token c
 var toAddress = '0x871A92E6a2Ef6Fe4Af01BD935333502d0f375AbF'; // where to send it
 var fromAddress = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2'; // Your address
 var contractABI = _constant.Tether_ABI;
-var contract = new web3.eth.Contract(contractABI, tokenAddress, {
-  from: fromAddress
-});
+var contract = new web3.eth.Contract(contractABI, tokenAddress);
 var amount = web3.utils.toHex(web3.utils.toWei("1")); //1 DEMO Token
 var data = contract.methods.transfer(toAddress, amount).encodeABI();
