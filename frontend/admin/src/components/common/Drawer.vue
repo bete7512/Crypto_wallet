@@ -28,7 +28,7 @@
         <span class="mx-4">Customers</span>
       </router-link>
 
-      <router-link
+      <!-- <router-link
         data-tippy-content="Transactions"
         data-tippy-placement="right"
         class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
@@ -37,7 +37,7 @@
       >
         <font-awesome-icon :icon="['fass', 'comments-dollar']" size="lg" />
         <span class="mx-4">Transactions</span>
-      </router-link>
+      </router-link> -->
 
       <router-link
         data-tippy-content="Orders"
@@ -59,7 +59,7 @@
         <font-awesome-icon :icon="['fas', 'money-check-dollar']" />
         <span class="mx-4">Withdrawal</span>
       </router-link>
-      <router-link
+      <!-- <router-link
         data-tippy-content="Utitlities"
         data-tippy-placement="right"
         class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
@@ -78,7 +78,7 @@
       >
         <font-awesome-icon :icon="['fass', 'gear']" size="lg" />
         <span class="mx-4">Setting</span>
-      </router-link>
+      </router-link> -->
     </nav>
   </div>
 </template>

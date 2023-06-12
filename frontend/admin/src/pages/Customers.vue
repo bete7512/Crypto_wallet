@@ -1,67 +1,397 @@
 <template>
-  <div class="overflow-x-scroll">
-    <table
-      class="w-full pt-2 text-sm text-left text-gray-500 dark:text-gray-400"
-    >
-      <thead
-        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-      >
+  <!-- <div class="mt-20"></div> -->
+  <div v-if="error">{{ error }}</div>
+  <div v-if="loading" class="h-screen flex justify-center items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24"><circle cx="4" cy="12" r="3" fill="#231515"><animate id="svgSpinners3DotsFade0" fill="freeze" attributeName="opacity" begin="0;svgSpinners3DotsFade1.end-0.25s" dur="0.75s" values="1;.2"/></circle><circle cx="12" cy="12" r="3" fill="#231515" opacity=".4"><animate fill="freeze" attributeName="opacity" begin="svgSpinners3DotsFade0.begin+0.15s" dur="0.75s" values="1;.2"/></circle><circle cx="20" cy="12" r="3" fill="#231515" opacity=".3"><animate id="svgSpinners3DotsFade1" fill="freeze" attributeName="opacity" begin="svgSpinners3DotsFade0.begin+0.3s" dur="0.75s" values="1;.2"/></circle></svg> 
+
+  </div>
+  <div v-else class="mx-2">
+    <div class="px-2">
+      <h1 class="font-bold text-2xl text-gray-700">Customers</h1>
+    </div>
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 absolute h-5 text-gray-500 dark:text-gray-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="simple-search"
+            class="bg-gray-50 border text-sm cursor-text z-10 w-full border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block pl-8 p-1 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search..."
+            v-model="search"
+            required
+          />
+        </div>
+        <button
+          type="button"
+          @click="searchQuery()"
+          class="px-3 py-2 ml-2 cursor-pointer text-sm font-medium z-0 text-white bg-[#0080FE] hover:bg-[#242840] rounded-lg focus:outline-none focus:ring-[#862603cc]"
+        >
+          search
+        </button>
+      </div>
+      <div class="mr-2 py-1 text-lg">
+        <button
+          @click="exportToExcel"
+          class="bg-[#242840] hover:bg-[#131522] text-white font-bold py-1 px-4 rounded inline-flex items-center"
+        >
+          <svg
+            class="fill-current w-4 h-4 mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+          </svg>
+          <span>Download</span>
+        </button>
+      </div>
+    </div>
+    <table class="w-full divide-gray-200">
+      <thead class="bg-gray-100">
         <tr>
-          <th class="py-3 px-2">First Name</th>
-          <th class="py-3 px-2">Last Name</th>
-          <th class="py-3 px-2">Phone</th>
-          <th class="py-3 px-2">Total Product</th>
-          <th class="py-3 px-2">Registered At</th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            First Name
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Last Name
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Email
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Address
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Total Crypto Order
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Total Transactions
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Status
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            2FA
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Register Date
+          </th>
+          <th
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Action
+          </th>
         </tr>
       </thead>
-      <tbody class="px-2">
-        <tr v-if="error">
-          {{
-            error
-          }}
-        </tr>
-        <tr v-if="loading">
-          Loading
-        </tr>
+      <tbody class="bg-white divide-y divide-gray-200">
         <tr
-          v-else
-          v-for="user in users"
+          v-for="(user, i) in result.users"
           :key="user.id"
-          class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+          class="hover:bg-gray-100"
         >
-          <td class="py-3 px-2">{{ user.first_name }}</td>
-          <td class="py-3 px-2">{{ user.last_name }}</td>
-          <td class="py-3 px-2">{{ user.phone }}</td>
-          <td class="py-3 px-2">
-            {{ user.products_aggregate.aggregate?.count || 0 }}
+          <td class="px-6 py-4 whitespace-nowrap capitalize">
+            {{ user.first_name }}
           </td>
-          <td class="py-3 px-2">{{ user.created_at.split("T")[0] }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ user.last_name }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ user.email }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap capitalize">
+            {{ user.address }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ user.token_orders_aggregate.aggregate.count }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ user.total_transaction }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span
+              :class="
+                user.status
+                  ? 'bg-green-200 text-green-800 rounded-full px-2 py-1'
+                  : 'bg-yellow-200 text-yellow-800 rounded-full px-2 py-1'
+              "
+            >
+              {{ user.status ? "Active" : "Banned" }}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span
+              :class="
+                user.two_step
+                  ? 'bg-green-200 text-green-800 rounded-full px-2 py-1'
+                  : 'bg-yellow-200 text-yellow-800 rounded-full px-2 py-1'
+              "
+            >
+              {{ user.two_step ? "Active" : "No 2FA" }}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ user.created_at.split("T")[0] }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex space-x-1">
+              <button
+                @click="update_user(user.id, user.status)"
+                v-if="user.status"
+                class="hover:bg-gray-400 bg-none rounded-lg p-2 hover:shadow-lg"
+                data-tippy-content="View Detail of this Service Request"
+                data-tippy-placement="bottom"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'toggle-on']"
+                  style="color: #44d70f"
+                  size="xl"
+                />
+              </button>
+              <button
+                @click="update_user(user.id, user.status)"
+                v-else
+                class="hover:bg-gray-400 bg-none rounded-lg p-2 hover:shadow-lg"
+                data-tippy-content="View Detail of this Service Request"
+                data-tippy-placement="bottom"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'toggle-off']"
+                  size="xl"
+                  style="color: #b71010"
+                />
+              </button>
+              <button
+                @click="
+                  is_delete_modal_open = true;
+                  deleteFunction = async () => {
+                    await delete_user(user.id);     
+                  };
+                "
+                class="hover:bg-gray-400 bg-none rounded-lg p-2 hover:shadow-lg"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'trash']"
+                  size="xl"
+                  style="color: #ff0000"
+                />
+              </button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div class="flex justify-end">
+      <div class="flex flex-col items-center">
+        <div>
+          <span class="text-sm text-gray-700 dark:text-gray-400">
+            Showing
+            <span class="font-semibold text-gray-900 dark:text-white">{{
+              offset
+            }}</span>
+            to
+            <span class="font-semibold text-gray-900 dark:text-white">{{
+              offset + page_size > service_request_aggregate
+                ? user_aggregate
+                : offset + page_size
+            }}</span>
+            of
+            <span class="font-semibold text-gray-900 dark:text-white">{{
+              service_request_aggregate
+            }}</span>
+            Service Requests in total
+          </span>
+        </div>
+      </div>
+
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button
+          @click="prev_page"
+          :class="
+            offset == 0 ? 'bg-slate-600' : 'bg-gray-800 hover:bg-gray-900'
+          "
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-white rounded-l dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          <font-awesome-icon class="px-2" :icon="['fas', 'arrow-left']" />
+          Prev
+        </button>
+        <button
+          @click="next_page"
+          :class="
+            current_page_number == number_of_pages
+              ? 'bg-slate-600'
+              : 'bg-gray-800 hover:bg-gray-900'
+          "
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-r dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Next
+          <font-awesome-icon class="px-2" :icon="['fas', 'arrow-right']" />
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="overflow-hidden h-screen"></div>
+  <Delete
+    v-if="is_delete_modal_open"
+    v-on:delete="deleteFunction()"
+    v-on:cancel="is_delete_modal_open = false"
+  >
+  </Delete>
 </template>
 <script setup>
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { ref, computed } from "vue";
-const users = []
-const isDelete = ref(false);
-const id_param = ref(0);
-const edit_product = () => {};
-const delete_product = (id) => {
-  id_param.value = id;
-  isDelete.value = true;
+import apolloclient from "../apollo.config";
+import Delete from "./Utils/Delete.vue";
+import * as XLSX from "xlsx";
+import { notify } from "@kyvg/vue3-notification";
+const search = ref(""); // search input value
+let deleteFunction;
+let is_delete_modal_open = ref(false);
+const DELETE_USER = gql`
+  mutation MyMutation($id: Int!) {
+    delete_users_by_pk(id: $id) {
+      id
+    }
+  }
+`;
+const { result, loading, error, refetch } = useQuery(
+  gql`
+  query MyQuery($search: String = "%%") {
+  users(where: {_or: [{first_name: {_ilike: $search}}, {email: {_ilike: $search}}, {last_name: {_ilike: $search}}], role: {name: {_eq: "users"}}}) {
+    address
+    email
+    first_name
+    last_name
+    id
+    created_at
+    status
+    role {
+      name
+    }
+    token_orders_aggregate {
+      aggregate {
+        count(columns: id)
+      }
+    }
+    total_transaction
+    two_step
+    wallet {
+      public_key
+    }
+  }
+}
+  `,
+  {
+    search: search.value ? `%${search.value}%` : "%%",
+  }
+);
+const users = computed(() => result.value?.users ?? []);
+const searchQuery = async () => {
+  refetch({ search: `%${search.value}%` });
 };
-const detail_product = ref(false);
 
-const view_product = (id) => {
-  id_param.value = id;
-  detail_product.value = true;
+const exportToExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const data = [
+    ["First Name", "Last Name", "Email", "Status", "2FA", "Reg Date"],
+    ...users.value.map((user) => [
+      user.first_name,
+      user.last_name,
+      user.email,
+      user.status ? "Active" : "Inactive",
+      user.two_step ? "Enabled" : "Disabled",
+      user.created_at.split("T")[0],
+    ]),
+  ];
+  const sheet = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(workbook, sheet, "Data");
+  XLSX.writeFile(workbook, "data.xlsx");
 };
 
-const modal = ref(false);
+async function update_user(id, status) {
+  try {
+    const response = await apolloclient.mutate({
+      mutation: gql`
+        mutation MyMutation($id: Int!, $status: Boolean!) {
+          update_users(where: { id: { _eq: $id } }, _set: { status: $status }) {
+            affected_rows
+          }
+        }
+      `,
+      variables: {
+        id,
+        status: !status,
+      },
+    });
+    refetch({ search: `%${search.value}%` });
+    notify({
+      type: "success",
+      text: "User Updated Successfully",
+    });
+  } catch (error) {
+    notify({
+      type: "error",
+      text: "Error Updating User",
+    });
+  }
+}
+
+async function delete_user(id) {
+  try {
+    const response = await apolloclient.mutate({
+      mutation: DELETE_USER,
+      variables: {
+        id,
+      },
+    });
+    console.log(response);
+    refetch({ search: `%${search.value}%` });
+    notify({
+      type: "success",
+      text: "User Deleted Successfully",
+    });
+  } catch (error) {
+    notify({
+      type: "error",
+      text: error.message
+    });
+  }
+  is_delete_modal_open.value = false;
+}          
 </script>
 
 <style></style>

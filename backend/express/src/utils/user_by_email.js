@@ -6,6 +6,7 @@ query MyQuery($email: String = "") {
       last_name
       email
       id
+      status
       password
       roleId
       role {

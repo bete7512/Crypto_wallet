@@ -17,7 +17,11 @@ const handler = async (req, res) => {
         message: 'User Not Found',
       })
     }
-
+    if(user.status === false){
+      return res.status(400).json({     
+        message: 'You Are Banned From Using This Platform Kindly Contact Admin',      
+      })
+    }
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
     if (!isPasswordCorrect) {
       return res.status(400).json({
