@@ -8,7 +8,7 @@ exports.User = void 0;
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _apollo = _interopRequireDefault(require("../configuration/apollo.config"));
-var USE_BY_ID = "query MyQuery($id: Int!) {\n    users_by_pk(id: $id) {\n      id\n      email\n      first_name\n      wallets {\n        public_key\n      }\n    }\n  }\n";
+var USE_BY_ID = "query MyQuery($id: Int!) {\n    users_by_pk(id: $id) {\n      id\n      email\n      first_name\n      wallets {\n        public_key\n        private_key\n      }\n    }\n  }\n";
 var User = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(variables) {
     var data;

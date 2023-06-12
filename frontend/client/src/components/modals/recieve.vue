@@ -33,17 +33,18 @@
             <div class="flex space-x-3">
               <div>{{ user.user.wallets[0].public_key }}</div>
 
-              <button class="copy-button">
-                <font-awesome-icon :icon="['fas', 'copy']" />
+              <button @click="copy(source)">
+                <span v-if="!copied">
+                  <font-awesome-icon :icon="['fas', 'copy']" />
+                </span>
+                <span v-else>Copied!</span>
               </button>
-            
             </div>
-            
           </div>
           <div class="w-full flex justify-center items-center h-full">
             <div class="w-full text-center">
               <div class="flex justify-center items-center">
-                <img class="w-1/2 h-1/2 rouned-lg" src="../../assets/qr.png" alt="" />
+                <img :src="qrcode" alt="QR Code"  />
               </div>
               <div class="flex justify-center text-left">Scan</div>
             </div>
@@ -58,52 +59,17 @@ import apolloclient from '../../apollo.config'
 import { ref, onMounted } from 'vue'
 import { assetStore } from '../../stores/asset'
 import { UserStore } from '../../stores/user_store'
+import { useClipboard } from '@vueuse/core'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+
+const user = UserStore()
+const source = ref(user.user.wallets[0].public_key)
+const { text, copy, copied, isSupported } = useClipboard({ source })
+const qrcode = useQRCode(source)
 const emit = defineEmits(['close'])
 const asset = assetStore()
-const user = UserStore()
 const discard = () => {
   emit('close')
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  function copyToClipboard(text) {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          // Success - Optional: Provide feedback to the user
-          alert('Address copied to clipboard!');
-        })
-        .catch((error) => {
-          // Error occurred
-          console.error('Failed to copy text: ', error);
-        });
-    } else {
-      // Fallback for browsers that don't support Clipboard API
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-
-      // Optional: Provide feedback to the user
-      alert('Address copied to clipboard!');
-    }
-  }
-
-  const copyButton = document.querySelector('.copy-button');
-  const addressText = document.querySelector('.flex div');
-
-  copyButton.addEventListener('click', function() {
-    const address = addressText.textContent;
-    
-    if (address) {
-      copyToClipboard(address);
-    } else {
-      console.error('Address is not defined.');
-    }
-  });
-});
-
 </script>
 <style></style>

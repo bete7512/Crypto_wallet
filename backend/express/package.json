@@ -31,6 +31,7 @@
     "bcrypt": "^5.1.0",
     "bignumber": "^1.1.0",
     "bip39": "^3.1.0",
+    "chapa": "^1.0.5",
     "dotenv": "^16.0.3",
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^6.3.0",
@@ -41,9 +42,13 @@
     "hdkey": "^2.1.0",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
+    "nodemailer": "^6.9.3",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "secure-pin": "^1.0.14",
     "web3": "^1.8.1",
     "web3-eth-accounts": "^1.8.1",
     "web3-eth-contract": "^1.8.1",
-    "web3-eth-personal": "^1.8.1"
+    "web3-eth-personal": "^1.8.1",
+    "web3-utils": "^4.0.1"
   }
 }

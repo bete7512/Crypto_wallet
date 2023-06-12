@@ -18,6 +18,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import Notifications from '@kyvg/vue3-notification'
 import velocity from 'velocity-animate'
 import { TroisJSVuePlugin } from 'troisjs';
+import vueCountryRegionSelect from 'vue-country-region-select'
+
 library.add(fas, far, fab)
 dom.watch();
 const pinia = createPinia()
@@ -33,6 +35,7 @@ app.component('empty-layout',Empty)
 app.component('authed-layout',Authed) 
 app.use(pinia)
 app.use(router)
+app.use(vueCountryRegionSelect)
 app.use(VueClipboard)
 app.use(Notifications, { velocity })
 app.component('font-awesome-icon', FontAwesomeIcon)

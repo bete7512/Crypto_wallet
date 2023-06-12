@@ -6,7 +6,6 @@ import * as dotenv from 'dotenv'
 // import Personal from 'web3-eth-personal'
 
 dotenv.config()
-const web3 = new Web3('wss://sepolia.infura.io/ws/v3/7adda8f39ad04bf2b5709fe8a04fbbdd')
-  // process.env.INFURA_SEPOLIA_END_POINT)
+const web3 = new Web3(process.env.INFURA_SEPOLIA_END_POINT)
 // const contract = new Contract()
 export { web3 }

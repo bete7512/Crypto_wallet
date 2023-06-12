@@ -11,6 +11,8 @@ export const LOGIN = gql`
 mutation MyMutation($email: String = "", $password: String = "") {
     login(email: $email, password: $password) {
       access_token
+      message
+      two_step
     }
   }
   `
@@ -53,12 +55,16 @@ query MyQuery {
     email
     last_name
     id
+    address
+    created_at
     wallets {
       public_key
       private_key
       recovery_phrase
       id
     }
+    status
+    two_step
   }
 }
 `

@@ -196,3 +196,4 @@ var Tether_ABI = [{
   type: 'function'
 }];
 exports.Tether_ABI = Tether_ABI;
+var Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3';

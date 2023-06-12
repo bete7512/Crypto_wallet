@@ -84,9 +84,25 @@
           </button>
           <button
             @click="submitForm"
-            class="bg-[#46C40F] hover:bg-[#123503] text-white font-bold py-2 px-4 rounded-lg"
+            class="bg-[#46C40F] hover:bg-[#123503] flex space-x-2 text-white font-bold py-2 px-4 rounded-lg"
           >
-            Send
+            <p v-if="!spinner">Send</p>
+            <p  v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path
+                  fill="#231515"
+                  d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    dur="0.75s"
+                    repeatCount="indefinite"
+                    type="rotate"
+                    values="0 12 12;360 12 12"
+                  />
+                </path>
+              </svg>
+            </p>
           </button>
         </div>
       </div>
@@ -95,54 +111,66 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import apolloclient from '../../apollo.config'
 import { assetStore } from '../../stores/asset'
 import detectEthereumProvider from '@metamask/detect-provider'
 import Web3 from 'web3'
 import { notify } from '@kyvg/vue3-notification'
-import {Tether_ABI,Tether_Address} from '../../constants/Tether.ABI'
-import { Tegera_ABI,Tegera_Address } from '../../constants/Tegera.ABI'
+import { Tether_ABI, Tether_Address } from '../../constants/Tether.ABI'
+import { Tegera_ABI, Tegera_Address } from '../../constants/Tegera.ABI'
+import apolloclient from '../../apollo.config'
+import gql from 'graphql-tag'
 // const Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3'
-
+const Mutate = gql`
+  mutation MyMutation($amount: Int = 10, $to: String = "", $token_type: String = "") {
+    send_token(amount: $amount, token_type: $token_type, to: $to) {
+      success
+    }
+  }
+`
+const spinner = ref(false)
 const emit = defineEmits(['close', 'submit'])
-const asset = assetStore() 
+const asset = assetStore()
 const token_id = ref('')
 const send_type = ref('')
 const amount = ref('')
 const address = ref('')
 const error_message = ref('')
 const tokens = ref([])
-onMounted(async()=>{
+onMounted(async () => {
   await asset.get_tokens()
   await asset.get_networks()
-  tokens.value = asset.tokens 
+  tokens.value = asset.tokens
 })
 const discard = () => {
   emit('close')
 }
-async function submitForm(){
-  if(send_type == ''){
+async function submitForm() {
+  if (send_type == '') {
     error_message.value = 'Please select sending type'
-    return         
+    return
   }
-  if(token_id == ''){
+  if (token_id == '') {
     error_message.value = 'Please select token'
-    return         
-  }      
-  if(amount == ''){
-    error_message.value = 'Please enter Amount to send'
-    return         
+    return
   }
-  if(address == ''){
+  if (amount == '') {
+    error_message.value = 'Please enter Amount to send'
+    return
+  }
+  if (address == '') {
     error_message.value = 'Please enter address to send'
-    return         
-  }   
-  if(send_type == 'metamask'){
+    return
+  }
+  if (send_type.value == 'metamask') {
+    spinner.value = true
     await connectWallet()
-    await send_token()  
-  }else{     
-    await send_token()  
-  }      
+    await send_token()
+    spinner.value = false
+  } else {
+    spinner.value = true
+    await send_from_my_token()
+    spinner.value = false
+  }
 }
 async function connectWallet() {
   try {
@@ -153,13 +181,13 @@ async function connectWallet() {
       notify({
         type: 'success',
         title: 'Success',
-        text: 'Wallet Connected Successfully',
-      })       
+        text: 'Wallet Connected Successfully'
+      })
     } else {
       notify({
         type: 'error',
         title: 'Error',
-        text: 'Please install Metamask',
+        text: 'Please install Metamask'
       })
       console.log('Please install Metamask')
     }
@@ -167,7 +195,7 @@ async function connectWallet() {
     notify({
       type: 'error',
       title: 'Error',
-      text: error.message,
+      text: error.message
     })
     console.error(error)
   }
@@ -181,41 +209,81 @@ const send_token = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_accounts' })
     const account = accounts[0]
     const web3 = new Web3(window.ethereum)
-    if(token_id.value.name == 'ጠገራ'){
+    if (token_id.value.name == 'ጠገራ') {
       const contract = new web3.eth.Contract(Tegera_ABI, Tegera_Address)
       const decimals = await contract.methods.decimals().call()
       const amountInDecimal = Number(amount.value)
       const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
       await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
-    }                
-    else{
-      console.log(token_id);
+    } else {
+      console.log(token_id)
       const contract = new web3.eth.Contract(Tether_ABI, Tether_Address)
       const decimals = await contract.methods.decimals().call()
       const amountInDecimal = Number(amount.value)
       const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
       await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
     }
-    // const contract = new web3.eth.Contract(Tether_ABI, Tether_Address)
-    // const decimals = await contract.methods.decimals().call()
-    // const amountInDecimal = Number(amount.value)
-    // const weiAmount = BigInt(Math.floor(amountInDecimal * 10 ** decimals))
-    // await contract.methods.transfer(address.value, weiAmount.toString()).send({ from: account })
     amount.value = ''
     address.value = ''
     notify({
       type: 'success',
-      title: 'Success',
-      text: 'Token Sent Successfully',
+      text: 'Token Sent Successfully'
     })
     emit('close')
   } catch (error) {
     notify({
       type: 'error',
-      title: 'Error',
-      text: error.message,
+      text: error.message
     })
     console.error(error)
+  }
+}
+const send_from_my_token = async () => {
+  let send_type = token_id.value.name
+  if (amount.value == '') {
+    notify({
+      type: 'error',
+      text: 'Please enter Amount to send'
+    })
+    return
+  }
+  if (address.value == '') {
+    notify({
+      type: 'error',
+      text: 'Please enter address to send'
+    })
+    return
+  }
+  if (token_id.value.name == '') {
+    notify({
+      type: 'error',
+      text: 'Please select sending type'
+    })
+    return
+  }
+  if (token_id.value.name == 'ጠገራ') {
+    send_type = 'Tegera'
+  }
+  try {
+    const { data } = await apolloclient.mutate({
+      mutation: Mutate,
+      variables: {
+        amount: amount.value,
+        to: address.value,
+        token_type: send_type
+      }
+    })
+    notify({
+      type: 'success',
+      text: 'Token Sent Successfully'
+    })
+    console.log(data)
+  } catch (error) {
+    notify({
+      type: 'error',
+      text: error.message
+    })
+    console.log(error)
   }
 }
 </script>
