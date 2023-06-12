@@ -73,10 +73,16 @@
                 <span class="txt1"> Already have an account? </span>
                 <router-link class="text-blue-400" to="/signup">Signup</router-link>
               </div>
+              <div>
+                <span class="txt1"> Forget Password</span>
+                <router-link class="text-blue-400" to="/forget-password">Forgot Password</router-link>
+              </div>
             </div>
           </Form>
-          <div class="flex justify-center items-center ">
-            <button @click="signIn" type="button"
+          <div class="flex justify-center items-center">
+            <button
+              @click="signIn"
+              type="button"
               class="flex items-center bg-white border border-gray-300 rounded-lg shadow-md max-w-xs px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               <svg
@@ -131,16 +137,16 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { useAuth } from '@vueuse/firebase/useAuth'
 
 const app = initializeApp({
-  apiKey: "AIzaSyB8e24VUeTanuIexbJ7EZlbFYIqfno4IHs",
-  authDomain: "auth-f5efc.firebaseapp.com",
-  projectId: "auth-f5efc",
-  storageBucket: "auth-f5efc.appspot.com",
-  messagingSenderId: "567086431614",
-  appId: "1:567086431614:web:7dc5b5cbab1500ca23072f",
-  measurementId: "G-603RKMBFMK"
+  apiKey: 'AIzaSyB8e24VUeTanuIexbJ7EZlbFYIqfno4IHs',
+  authDomain: 'auth-f5efc.firebaseapp.com',
+  projectId: 'auth-f5efc',
+  storageBucket: 'auth-f5efc.appspot.com',
+  messagingSenderId: '567086431614',
+  appId: '1:567086431614:web:7dc5b5cbab1500ca23072f',
+  measurementId: 'G-603RKMBFMK'
 })
 const auth = getAuth(app)
-const { isAuthenticated, user:users } = useAuth(auth)
+const { isAuthenticated, user: users } = useAuth(auth)
 
 const signIn = () => signInWithPopup(auth, new GoogleAuthProvider())
 // alert(users)

@@ -259,13 +259,13 @@
             </td>
             <td class="px-6 py-3 uppercase whitespace-nowrap">
               <span
-                v-if="check_direction(transaction.to, transaction.from) == 'Out'"
-                class="border rounded-md text-xs border-[#D6A40D] shadow-sm text-[#D6A40D] px-1 bg-[#FFF6DA]"
+                v-if="check_direction(transaction.to) == 'In'"
+                class="border rounded-md text-xs border-[#42A286] shadow-sm text-[#E5F5F3] px-1 bg-[#42A286]"
                 >{{ check_direction(transaction.to, transaction.from) }}</span
               >
               <span
                 v-else
-                class="border border-[#42A286] rounded-md shadow-sm text-xs px-3 bg-[#E5F5F3] text-[#42A286]"
+                class="border border-[#D6A40D] rounded-md shadow-sm text-xs px-3 bg-[#D6A40D] text-[#FFF6DA]"
                 >{{ check_direction(transaction.to, transaction.from) }}</span
               >
             </td>
@@ -479,11 +479,11 @@ function to_lower_tring(value) {
   return str
 }
 
-function check_direction(from, to) {
-  if (from.toLowerCase() == user.public_key.toLowerCase()) {
-    return 'Out'
-  } else {
+function check_direction(to) {
+  if (to.toLowerCase() === user.public_key.toLowerCase()) {
     return 'In'
+  } else {
+    return 'Out'
   }
 }
 </script>

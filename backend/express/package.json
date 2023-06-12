@@ -48,6 +48,7 @@
     "web3": "^1.8.1",
     "web3-eth-accounts": "^1.8.1",
     "web3-eth-contract": "^1.8.1",
-    "web3-eth-personal": "^1.8.1"
+    "web3-eth-personal": "^1.8.1",
+    "web3-utils": "^4.0.1"
   }
 }

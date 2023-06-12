@@ -75,7 +75,23 @@
               <option :value="country.name" v-for="country in countries">{{ country.name }}</option>
             </select>
             <button @click="updateUser" class="px-2 py-2 bg-blue-900 text-stone-50 rounded-lg">
-              Save
+              <p v-if="!country_spinner">Send</p>
+            <p  v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path
+                  fill="#ffff"
+                  d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    dur="0.75s"
+                    repeatCount="indefinite"
+                    type="rotate"
+                    values="0 12 12;360 12 12"
+                  />
+                </path>
+              </svg>
+            </p>
             </button>
           </div>
           <div>
@@ -117,15 +133,43 @@
             >
               Import Wallet
             </button>
-            <div
-              v-if="new_recovery_phrase_importing"
-              class="flex mt-2 justify-between px-2 py-2 rounded-lg space-x-2"
-            >
-              <textarea
-                class="w-full rounded-lg border outline-none p-1 text-black"
-                type="text"
-              ></textarea>
-              <button class="px-2 py-1 bg-blue-900 text-stone-50 rounded-lg">save</button>
+            <div v-if="new_recovery_phrase_importing">
+              <div class="flex mt-2 justify-between px-2 py-2 rounded-lg space-x-2">
+                <div class="w-48">Recovery Phrase</div>
+                <textarea
+                  class="w-full rounded-lg border outline-none p-1 text-black"
+                  type="text"
+                  v-model="new_recovery_phrase"
+                ></textarea>
+
+                <button
+                  @click="updatePhrase"
+                  class="px-4 py-1 bg-blue-900 text-stone-50 rounded-lg"
+                >
+                  <p v-if="!update_rephrase_spinner">Recover</p>
+                  <p v-else>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#ffff"
+                        d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          dur="0.75s"
+                          repeatCount="indefinite"
+                          type="rotate"
+                          values="0 12 12;360 12 12"
+                        />
+                      </path>
+                    </svg>
+                  </p>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -145,8 +189,9 @@ import { useClipboard } from '@vueuse/core'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 const user = UserStore()
 const new_recovery_phrase = ref('') //
-const new_recovery_phrase_importing = ref(false)
-
+const new_recovery_phrase_importing = ref(false) //
+const new_private_key = ref('')
+const country_spinner = ref(false) 
 const source = ref(user.recovery_phrase)
 const recoveryPhrase = ref('')
 const show_recovery_phrase = ref(false)
@@ -165,6 +210,14 @@ watchEffect(() => {
     private_key.value = ''
   }
 })
+
+const UPDATE_KEY = gql`
+  mutation MyMutation($private_key: String = "", $recovery_phrase: String = "") {
+    update_user_wallet(private_key: $private_key, recovery_phrase: $recovery_phrase) {
+      success
+    }
+  }
+`
 watchEffect(() => {
   if (show_recovery_phrase.value) {
     recoveryPhrase.value = user.recovery_phrase
@@ -172,13 +225,13 @@ watchEffect(() => {
     recoveryPhrase.value = ''
   }
 })
-watchEffect(() => {
-  if (new_recovery_phrase_importing.value) {
-    new_recovery_phrase.value = user.recovery_phrase
-  } else {
-    new_recovery_phrase.value = ''
-  }
-})
+// watchEffect(() => {
+//   if (new_recovery_phrase_importing.value) {
+//     new_recovery_phrase.value = user.recovery_phrase
+//   } else {
+//     new_recovery_phrase.value = ''
+//   }
+// })
 const address = ref('')
 watchEffect(() => {
   address.value = user.user.address
@@ -188,12 +241,14 @@ const UPDATE_USER = gql`
     update_users(where: {}, _set: { address: $address }) {
       returning {
         address
+
       }
     }
   }
 `
 
 async function updateUser() {
+  country_spinner.value = true
   try {
     const { data } = await apolloclient.mutate({
       mutation: UPDATE_USER,
@@ -213,14 +268,16 @@ async function updateUser() {
         text: 'User not updated'
       })
     }
+    country_spinner.value = false
   } catch (error) {
     console.log(error)
     notify({
       type: 'error',
       text: error
     })
+    country_spinner.value  = false
   }
-  location.reload()
+  // location.reload()
 }
 const update_two = gql`
   mutation MyMutation($two_step: Boolean = false) {
@@ -258,6 +315,42 @@ const manage_two_factor = async (two_step) => {
       text: error
     })
   }
+}
+
+const update_rephrase_spinner = ref(false) 
+async function updatePhrase() {
+  update_rephrase_spinner.value = true      
+  try {
+    const { data } = await apolloclient.mutate({
+      mutation: UPDATE_KEY,
+      variables: {
+        private_key: '',
+        recovery_phrase: new_recovery_phrase.value
+      }
+    })
+    console.log(data)
+    if (data.update_user_wallet.success) {
+      notify({
+        type: 'success',
+        text: 'Wallet updated successfully'
+      })
+    } else {
+      notify({
+        type: 'error',
+        text: 'Wallet not updated'
+      })
+    }
+    update_rephrase_spinner.value = false 
+  } catch (error) {
+    console.log(error)
+    notify({
+      type: 'error',
+      text: error
+    })
+  }
+  update_rephrase_spinner.value = false 
+
+  // location.reload()
 }
 </script>
 <style></style>

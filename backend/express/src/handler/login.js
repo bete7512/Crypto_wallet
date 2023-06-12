@@ -1,12 +1,12 @@
 import client from '../configuration/apollo.config'
-import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
-dotenv.config()
 import { loginQuery } from '../constant/constant'
+import jwt from 'jsonwebtoken'
 import { User } from '../utils/user_by_email'
 import { Mailer } from '../utils/mailer'
-import { InsertCode } from '../utils/two_steps'
+import { InsertCode,Code,DeleteCode } from '../utils/two_steps'
+dotenv.config()
 const handler = async (req, res) => {
   const { email, password } = req.body.input
   try {
@@ -46,7 +46,12 @@ const handler = async (req, res) => {
 
       try {
         // let deleted = await DeleteCodeByEmail({ email: user.email })
-        // console.log(deleted);       
+        // console.log(deleted);   
+        let tested = await Code({ email: user.email })
+        if(tested){
+          let deleted = await DeleteCode({ id: tested.id })
+          console.log(deleted);
+        }    
         let data = await InsertCode({
           email: user.email,
           code: String(OTP),

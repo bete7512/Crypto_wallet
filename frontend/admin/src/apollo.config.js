@@ -1,7 +1,7 @@
 import { ApolloClient,createHttpLink,InMemoryCache } from "@apollo/client/core";
 const getHeaders = () => {
     var headers = {};
-    const token = window.localStorage.getItem("AdminToken");
+    const token = window.localStorage.getItem("cryptoAdminToken");
     // console.log("from apollo token"+token);
     if (token){
 
@@ -10,7 +10,7 @@ const getHeaders = () => {
     return headers;
   };
 const httpLink = createHttpLink({
-    uri:'https://alx-full-stack.hasura.app/v1/graphql',
+    uri:'https://blockchain-wallet.hasura.app/v1/graphql',
     fetch,
     headers:getHeaders()
 })

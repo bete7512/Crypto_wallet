@@ -2,6 +2,7 @@ import client from '../configuration/apollo.config'
 import jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 import bcrypt from 'bcrypt'
+import { Mailer } from '../utils/mailer'
 dotenv.config()
 // import { User } from '../utils/user_by_email'
 // import { Mailer } from '../utils/mailer'
@@ -28,8 +29,14 @@ const handler = async (req, res) => {
       })
     }
     await DeleteCode({ id: otp.id })
-    await DeleteCodeByEmail({ email: otp.email })   
-    return res.status(200).json({
+    await DeleteCodeByEmail({ email: otp.email })
+    const mail = await Mailer(
+       otp.email,
+       "Succcessfully Logged In",
+       `<h1>Successfully Logged In</h1>`,     
+    )
+    console.log(mail);
+        return res.status(200).json({
       token: otp.token,
     })
   } catch (error) {

@@ -1,106 +1,102 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../pages/Home.vue'
-import Login from '../pages/Login.vue'
-
+import { createRouter, createWebHistory } from "vue-router";
+import Login from "../pages/Login.vue";
+import Dashboard from "../pages/Dashboard.vue";
+import Utility from "../pages/Utility.vue";
+import Setting from "../pages/Setting.vue";
+import Transactions from "../pages/Transactions.vue";
+import Customers from "../pages/Customers.vue";
+import Orders from "../pages/Orders.vue";
+import Withdrawal from "../pages/Withdrawal.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
-      meta: { layout: 'main' },
+      path: "/",
+      name: "dashboard",
+      component: Dashboard,
+      meta: { layout: "main" },
       beforeEnter: (to, from, next) => {
-        if (localStorage.getItem('AdminToken')) {
-          next()
+        if (localStorage.getItem("cryptoAdminToken")) {
+          next();
         } else {
-          next('/login')
+          next("/login");
         }
-      }
+      },
     },
     {
-      path: '/login',
-      name: 'login',
+      path: "/login",
+      name: "login",
       component: Login,
-      meta: { layout: 'empty' },
+      meta: { layout: "empty" },
       beforeEnter: (to, from, next) => {
-        if (localStorage.removeItem('AdminToken')) {
+        if (localStorage.removeItem("cryptoAdminToken")) {
           console.log("am here");
-          next('/login')
+          next("/login");
         } else {
           console.log("the fucked one");
-          next()
+          next();
           console.log(next());
         }
-      }
+      },
     },
-
-
     {
-      path: '/products',
-      name: 'products',
-      component: () => import('../pages/Products/Products.vue'),
-      meta: { layout: 'main' },
-      beforeEnter: (to, from, next) => {
-        if (localStorage.getItem('AdminToken')) {
-          next()
-        } else {
-          next('/login')
-        }
+      path:'/customers',
+      name:'customers',
+      component:Customers,
+      meta:{
+        layout:'main'
       }
     },
     {
-      path: '/addnewproduct',
-      name: 'addnewproduct',
-      component: () => import('../pages/Products/AddProducts/AddnewProduct.vue'),
-      meta: { layout: 'main' },
-      beforeEnter: (to, from, next) => {
-        if (localStorage.getItem('AdminToken')) {
-          next()
-        } else {
-          next('/login')
-        }
-      }
-    },
-
-    {
-      path: '/orders',
-      name: 'orders',
-      component: () => (import('../pages/Products/Order.vue')),
-      meta: { layout: 'main' },
-      beforeEnter: (to, from, next) => {
-        if (localStorage.getItem('AdminToken')) {
-          next()
-        } else {
-          next('/login')
-        }
+      path:'/transactions',
+      name:'transactions',
+      component:Transactions,
+      meta:{
+        layout:'main'
       }
     },
     {
-      path: '/seller', 
-      name: 'seller', 
-      component: () => import('../pages/Seller.vue'), 
-      meta: { layout: 'main' },        
-      beforeEnter: (to, from, next) => {   
-        if (localStorage.getItem('AdminToken')) { 
-          next() 
-        } else { 
-          next('/login') 
-        } 
-      } 
+      path:'/orders',
+      name:'orders',
+      component:Orders,
+      meta:{
+        layout:'main'
+      }
+    },
+    {
+      path:'/withdrawal',
+      name:'withdrawal',
+      component:Withdrawal,
+      meta:{
+        layout:'main'
+      }
+    },
+    {
+      path:'/utilities',
+      name:'utilities',
+      component:Utility,
+      meta:{
+        layout:'main'
+      }
+    },
+    {
+      path:'/setting',
+      name:'setting',
+      component:Setting,
+      meta:{
+        layout:'main'
+      }
     }
+  ],
+});
 
-  ]
-})
-
-// window.localStorage.removeItem('AdminToken')
-// router.beforeEach(async (to) => {
-//   const publicPages = ['/login', '/signup'];
-//   const authRequired = !publicPages.includes(to.path);
-//   if (authRequired && !window.localStorage.getItem("AdminToken")) {
-//     // returnUrl = to.fullPath;
-//     return '/login';
-//   }
-// });
+router.beforeEach(async (to) => {
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  if (authRequired && !window.localStorage.getItem("cryptoAdminToken")) {
+    // returnUrl = to.fullPath;
+    return '/login';
+  }
+});
 // console.log(window.localStorage.getItem("AdminToken"));
-export default router
+export default router;
