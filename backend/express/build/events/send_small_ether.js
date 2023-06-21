@@ -10,7 +10,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 var _web = require("../web3/web3");
 var sender = '0x2709Ae17403096A516b86ad4f39c463CD9b92aF2';
 var sender_key = '0x702d55555b4c58bd0016246bcf824db4412a6c7bb38a85c7882ef2632d7fd354';
-var value = '0.01';
+var value = '0.04';
 function sendRaw(_x, _x2) {
   return _sendRaw.apply(this, arguments);
 }

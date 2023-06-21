@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Tether_ABI = void 0;
+exports.Tether_Address = exports.Tether_ABI = void 0;
 var Tether_ABI = [{
   inputs: [{
     internalType: 'string',
@@ -197,3 +197,4 @@ var Tether_ABI = [{
 }];
 exports.Tether_ABI = Tether_ABI;
 var Tether_Address = '0x222fB5507acD3Da78351Be60271fa9537b07Cdc3';
+exports.Tether_Address = Tether_Address;
